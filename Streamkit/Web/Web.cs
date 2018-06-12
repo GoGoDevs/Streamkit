@@ -54,7 +54,9 @@ namespace Streamkit.Web {
         }
 
         public void CopyTo(KeyValuePair<string, string>[] array, int arrayIndex) {
-            throw new System.NotImplementedException();
+            foreach (KeyValuePair<string, string> kvp in this.param) {
+                array[arrayIndex++] = kvp;
+            }
         }
 
         public IEnumerator<KeyValuePair<string, string>> GetEnumerator() {
