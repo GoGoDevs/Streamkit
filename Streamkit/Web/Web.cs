@@ -1,8 +1,78 @@
 ﻿using System;
+using System.IO;
+using System.Net;
+using System.Text;
 using System.Collections;
 using System.Collections.Generic;
 
+using Newtonsoft.Json.Linq;
+
 namespace Streamkit.Web {
+    public abstract class HttpRequest {
+        protected WebRequest request;
+        protected HttpWebResponse response;
+        protected string url;
+        protected UrlParams param = new UrlParams();
+
+        protected Dictionary<HttpRequestHeader, string> headers
+                = new Dictionary<HttpRequestHeader, string>();
+
+        public HttpRequest(string url) {
+            this.url = url;
+        }
+
+        public void AddParam(string name, string value) {
+            this.param.Add(name, value);
+        }
+
+        public void AddHeader(HttpRequestHeader header, string value) {
+            this.headers.Add(header, value);
+        }
+
+        public abstract string Method { get; }
+
+        public byte[] GetResponseBytes() {
+            this.configure();
+            this.response = (HttpWebResponse)this.request.GetResponse();
+
+            using (Stream responseStream = this.response.GetResponseStream()) {
+                using (BinaryReader reader = new BinaryReader(responseStream)) {
+                    return reader.ReadBytes((int)this.response.ContentLength);
+                }
+            }
+        }
+
+        public string GetResponse() {
+            return Encoding.UTF8.GetString(this.GetResponseBytes());
+        }
+
+        public JObject GetResponseJson() {
+            return JObject.Parse(this.GetResponse());
+        }
+
+        private void configure() {
+            this.request = WebRequest.Create(url + param.ToString());
+            this.request.Method = this.Method;
+
+            foreach (KeyValuePair<HttpRequestHeader, string> header in this.headers) {
+                this.request.Headers.Add(header.Key, header.Value);
+            }
+        }
+    }
+
+
+    public class HttpGetRequest : HttpRequest {
+        public HttpGetRequest(string url) : base(url) { }
+
+        public override string Method {
+            get { return "GET"; }
+        }
+    }
+
+
+    // TODO: Add other HTTP request methods as required.
+
+
     public class UrlParams : IDictionary<string, string> {
         private Dictionary<string, string> param
                 = new Dictionary<string, string>();
