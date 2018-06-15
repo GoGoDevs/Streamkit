@@ -10,6 +10,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
+using Streamkit.Configuration;
+
 namespace Streamkit
 {
     public class Startup
@@ -40,13 +42,17 @@ namespace Streamkit
         {
             if (env.IsDevelopment())
             {
+                Config.Environment = Env.Development;
                 app.UseDeveloperExceptionPage();
             }
             else
             {
+                Config.Environment = Env.Production;
                 app.UseExceptionHandler("/Home/Error");
                 app.UseHsts();
             }
+
+            Config.Configure();
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
