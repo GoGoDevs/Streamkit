@@ -8,7 +8,6 @@ using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json.Linq;
 
 using Streamkit.Web;
-using Streamkit.Configuration;
 
 namespace Streamkit.Controllers
 {

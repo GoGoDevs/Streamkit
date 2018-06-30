@@ -51,7 +51,7 @@ namespace Streamkit {
             OAuthRedirect = (string)config["oauth"]["redirect"];
 
             JObject credentials = JObject.Parse(
-                    File.ReadAllText(AppPath + "credentials/credentials.json"));
+                    File.ReadAllText(AppPath + "/credentials/credentials.json"));
 
             AESKey = (string)credentials["aes_key"];
 
