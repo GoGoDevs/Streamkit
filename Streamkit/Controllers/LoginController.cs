@@ -11,7 +11,7 @@ using Streamkit.Web;
 
 namespace Streamkit.Controllers
 {
-    public class ConnectController : Controller
+    public class LoginController : Controller
     {
         public IActionResult Index()
         {
