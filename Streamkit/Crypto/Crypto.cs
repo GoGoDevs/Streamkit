@@ -1,9 +1,17 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Security.Cryptography;
 
 using Streamkit.Utils;
 
 namespace Streamkit.Crypto {
+    public static class TokenGenerator {
+        public static string Generate() {
+            return Guid.NewGuid().ToString();
+        }
+    }
+
+
     public static class AES {
         public static string GenerateKeyString() {
             return Base64.Encode(GenerateKey());

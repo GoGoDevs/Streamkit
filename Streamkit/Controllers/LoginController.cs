@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json.Linq;
 
 using Streamkit.Web;
+using Streamkit.Crypto;
 
 namespace Streamkit.Controllers
 {
@@ -15,22 +16,18 @@ namespace Streamkit.Controllers
     {
         public IActionResult Index()
         {
-            // TODO: Map OAuth connection links to model.
-            // TODO: Move OAuth logic to OAuth namespace after we get it working.
-            HttpGetRequest req = new HttpGetRequest("todo url");
-            req.AddParam("client_id", Config.TwitchOAuth.ClientId);
-            req.AddParam("redirect_uri", Config.OAuthRedirect);
-            req.AddParam("response_type", "code");
-            req.AddParam("scope", Config.TwitchScope);
-            req.AddParam("force_verify", "true");
-            req.AddParam("state", null); // TODO: Generate token for this.
+            UrlParams param = new UrlParams();
+            param.Add("client_id", Config.TwitchOAuth.ClientId);
+            param.Add("redirect_uri", Config.OAuthRedirect);
+            param.Add("response_type", "code");
+            param.Add("scope", Config.TwitchScope);
+            param.Add("force_verify", "true");
+            param.Add("state", TokenGenerator.Generate()); // TODO: Generate token for this.
 
-            JObject res = req.GetResponseJson();
+            string twitchUrl = "https://api.twitch.tv/kraken/oauth2/authorize"
+                    + param.ToString();
 
-
-            // TODO: ServiceConnectUrl class for storing the connection urls
-            // to all OAuth services.
-            ViewData["service_connect_url"] = null;
+            ViewBag.TwitchUrl = twitchUrl;
 
             return View();
         }
