@@ -61,8 +61,8 @@ namespace Streamkit.Web {
     }
 
 
-    public class HttpGetRequest : HttpRequest {
-        public HttpGetRequest(string url) : base(url) { }
+    public class GetRequest : HttpRequest {
+        public GetRequest(string url) : base(url) { }
 
         public override string Method {
             get { return "GET"; }

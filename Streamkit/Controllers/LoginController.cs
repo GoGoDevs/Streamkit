@@ -10,12 +10,9 @@ using Newtonsoft.Json.Linq;
 using Streamkit.Web;
 using Streamkit.Crypto;
 
-namespace Streamkit.Controllers
-{
-    public class LoginController : Controller
-    {
-        public IActionResult Index()
-        {
+namespace Streamkit.Controllers {
+    public class LoginController : Controller {
+        public IActionResult Index() {
             UrlParams param = new UrlParams();
             param.Add("client_id", Config.TwitchOAuth.ClientId);
             param.Add("redirect_uri", Config.OAuthRedirect);
@@ -30,6 +27,10 @@ namespace Streamkit.Controllers
             ViewBag.TwitchUrl = twitchUrl;
 
             return View();
+        }
+
+        public IActionResult Twitch() {
+            return RedirectToAction("MyAccount", "Index");
         }
     }
 }
