@@ -4,7 +4,7 @@ using System.Configuration;
 
 using Newtonsoft.Json.Linq;
 
-namespace Streamkit.Configuration {
+namespace Streamkit {
     public enum Env {
         Development,
         Production
@@ -19,12 +19,14 @@ namespace Streamkit.Configuration {
         public static string TwitchScope;
         public static string OAuthRedirect;
         public static string AppPath;
+        public static string AESKey;
 
 
         public static void Configure() {
             // TODO: Clean up this mess when we get things working.
             AppPath = Directory.GetCurrentDirectory();
 
+            // Read oauth file.
             JObject oauth = JObject.Parse(
                     File.ReadAllText(AppPath + "/credentials/oauth.json"));
 
@@ -32,6 +34,7 @@ namespace Streamkit.Configuration {
             TwitchOAuth = new OAuthCredentials(
                     (string)twitch["client_id"], (string)twitch["secret"]);
             TwitchChatToken = (string)twitch["chat_token"];
+
 
             JObject config = null;
             if (Environment == Env.Development) {
@@ -46,6 +49,12 @@ namespace Streamkit.Configuration {
             RootUrl = (string)config["root_url"];
             TwitchScope = (string)config["oauth"]["twitch"]["scope"];
             OAuthRedirect = (string)config["oauth"]["redirect"];
+
+            JObject credentials = JObject.Parse(
+                    File.ReadAllText(AppPath + "credentials/credentials.json"));
+
+            AESKey = (string)credentials["aes_key"];
+
         }
     }
 

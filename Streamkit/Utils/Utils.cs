@@ -1,8 +1,39 @@
 ﻿using System;
+using System.Text;
 using System.Collections;
 using System.Collections.Generic;
 
 namespace Streamkit.Utils {
+    public static class ByteConverter {
+        public static byte[] ToBytes(string str) {
+            return Encoding.UTF8.GetBytes(str);
+        }
+
+        public static string ToString(byte[] bytes) {
+            return Encoding.UTF8.GetString(bytes);
+        }
+    }
+
+
+    public static class Base64 {
+        public static string Encode(byte[] bytes) {
+            return Convert.ToBase64String(bytes);
+        }
+
+        public static string Encode(string str) {
+            return Encode(ByteConverter.ToBytes(str));
+        }
+
+        public static byte[] DecodeToBytes(string base64) {
+            return Convert.FromBase64String(base64);
+        }
+
+        public static string DecodeToString(string base64) {
+            return ByteConverter.ToString(DecodeToBytes(base64));
+        }
+    }
+
+
     /// <summary>
     /// Class for iterating over a range of dates.
     /// </summary>
