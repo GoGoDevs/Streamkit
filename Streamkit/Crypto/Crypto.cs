@@ -5,6 +5,10 @@ using Streamkit.Utils;
 
 namespace Streamkit.Crypto {
     public static class AES {
+        public static string GenerateKeyString() {
+            return Base64.Encode(GenerateKey());
+        }
+
         public static byte[] GenerateKey() {
             RijndaelManaged algo = new RijndaelManaged();
             algo.KeySize = 256;
@@ -21,13 +25,15 @@ namespace Streamkit.Crypto {
         }
 
         public static string Encrypt(string str, string key) {
-            return ByteConverter.ToString(
-                    Encrypt(ByteConverter.ToBytes(str), ByteConverter.ToBytes(key)));
+            string strBase64 = Base64.Encode(str);
+            byte[] bytes = Encrypt(Base64.DecodeToBytes(strBase64), Base64.DecodeToBytes(key));
+            return Base64.DecodeToString(Base64.Encode(bytes));
         }
 
         public static string Decrypt(string str, string key) {
-            return ByteConverter.ToString(
-                    Decrypt(ByteConverter.ToBytes(str), ByteConverter.ToBytes(key)));
+            string strBase64 = Base64.Encode(str);
+            byte[] bytes = Decrypt(Base64.DecodeToBytes(strBase64), Base64.DecodeToBytes(key));
+            return Base64.DecodeToString(Base64.Encode(bytes));
         }
 
         public static byte[] Encrypt(byte[] data, byte[] key) {
