@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json.Linq;
 
 using Streamkit.Web;
+using Streamkit.OAuth;
 using Streamkit.Crypto;
 
 namespace Streamkit.Controllers {
@@ -15,7 +16,7 @@ namespace Streamkit.Controllers {
         public IActionResult Index() {
             UrlParams param = new UrlParams();
             param.Add("client_id", Config.TwitchOAuth.ClientId);
-            param.Add("redirect_uri", Config.OAuthRedirect);
+            param.Add("redirect_uri", Config.RootUrl + Config.OAuthRedirect);
             param.Add("response_type", "code");
             param.Add("scope", Config.TwitchScope);
             param.Add("force_verify", "true");
@@ -30,6 +31,13 @@ namespace Streamkit.Controllers {
         }
 
         public IActionResult Twitch() {
+            string code = Request.Query["code"];
+            string state = Request.Query["state"];
+
+            // Create a new streamkit account for this user.
+            string token = TwitchOAuth.GetToken(code, state);
+            TwitchOAuth.Validate(token);
+
             return RedirectToAction("MyAccount", "Index");
         }
     }

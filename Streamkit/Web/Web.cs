@@ -13,6 +13,7 @@ namespace Streamkit.Web {
         protected HttpWebResponse response;
         protected string url;
         protected UrlParams param = new UrlParams();
+        protected byte[] body;
 
         protected Dictionary<HttpRequestHeader, string> headers
                 = new Dictionary<HttpRequestHeader, string>();
@@ -31,7 +32,7 @@ namespace Streamkit.Web {
 
         public abstract string Method { get; }
 
-        public byte[] GetResponseBytes() {
+        public virtual byte[] GetResponseBytes() {
             this.configure();
             this.response = (HttpWebResponse)this.request.GetResponse();
 
@@ -57,6 +58,13 @@ namespace Streamkit.Web {
             foreach (KeyValuePair<HttpRequestHeader, string> header in this.headers) {
                 this.request.Headers.Add(header.Key, header.Value);
             }
+
+            if (this.body != null) {
+                this.request.ContentLength = this.body.Length;
+                using (var stream = this.request.GetRequestStream()) {
+                    stream.Write(this.body, 0, this.body.Length);
+                }
+            }
         }
     }
 
@@ -70,12 +78,45 @@ namespace Streamkit.Web {
     }
 
 
+    public class PostRequest : HttpRequest {
+        private byte[] body;
+
+        public PostRequest(string url) : base(url) { }
+
+        public override string Method {
+            get { return "POST"; }
+        }
+
+        public byte[] Body {
+            set {
+                this.body = value;
+            }
+        }
+
+        public string BodyString {
+            set {
+                this.Body = Encoding.UTF8.GetBytes(value);
+            }
+        }
+
+        public JObject BodyJson {
+            set {
+                this.BodyString = value.ToString();
+            }
+        }
+    }
+
+
     // TODO: Add other HTTP request methods as required.
 
 
     public class UrlParams : IDictionary<string, string> {
         private Dictionary<string, string> param
                 = new Dictionary<string, string>();
+
+        public string Form {
+            get { return this.ToString().Replace("?", ""); }
+        }
 
         public string this[string key] {
             get { return this.param[key]; }
