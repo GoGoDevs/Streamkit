@@ -15,12 +15,12 @@ namespace Streamkit.OAuth {
             param.Add("client_secret", Config.TwitchOAuth.Secret);
             param.Add("code", code);
             param.Add("grant_type", "authorization_code");
-            param.Add("redirect_uri", Config.OAuthRedirect); // May need to add root url in front of this?
+            param.Add("redirect_uri", Config.OAuthRedirect);
             param.Add("state", state);
 
             req.AddHeader(HttpRequestHeader.ContentType, "application/x-www-form-urlencoded");
 
-            req.BodyString = param.ToString();
+            req.BodyString = param.ToPostString();
 
             JObject resp = req.GetResponseJson();
             return (string)resp["access_token"];
@@ -32,7 +32,7 @@ namespace Streamkit.OAuth {
             req.AddHeader(HttpRequestHeader.Authorization, "OAuth " + token);
             req.AddHeader(HttpRequestHeader.Accept, "application/vnd.twitchtv.v5+json");
 
-            JObject resp = new JObject();
+            JObject resp = req.GetResponseJson();
             string userId = (string)resp["token"]["user_id"];
             string username = (string)resp["token"]["user_name"];
         }

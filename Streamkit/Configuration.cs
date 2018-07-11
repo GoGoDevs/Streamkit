@@ -48,7 +48,7 @@ namespace Streamkit {
 
             RootUrl = (string)config["root_url"];
             TwitchScope = (string)config["oauth"]["twitch"]["scope"];
-            OAuthRedirect = (string)config["oauth"]["redirect"];
+            OAuthRedirect = RootUrl + (string)config["oauth"]["redirect"];
 
             JObject credentials = JObject.Parse(
                     File.ReadAllText(AppPath + "/credentials/credentials.json"));
@@ -75,7 +75,7 @@ namespace Streamkit {
         }
 
         public string Secret {
-            get { return this.clientId; }
+            get { return this.secret; }
         }
     }
 }

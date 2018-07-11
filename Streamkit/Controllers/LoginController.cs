@@ -16,7 +16,7 @@ namespace Streamkit.Controllers {
         public IActionResult Index() {
             UrlParams param = new UrlParams();
             param.Add("client_id", Config.TwitchOAuth.ClientId);
-            param.Add("redirect_uri", Config.RootUrl + Config.OAuthRedirect);
+            param.Add("redirect_uri", Config.OAuthRedirect);
             param.Add("response_type", "code");
             param.Add("scope", Config.TwitchScope);
             param.Add("force_verify", "true");

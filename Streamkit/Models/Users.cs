@@ -10,4 +10,11 @@ namespace Streamkit.Models
         private string twitchId;
         private string twitchUsername;
     }
+
+    
+    public static class UserManager {
+        public static User GetUser(string id) {
+            throw new NotImplementedException();
+        }
+    }
 }

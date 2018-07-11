@@ -5,9 +5,21 @@ using System.Text;
 using System.Collections;
 using System.Collections.Generic;
 
+using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json.Linq;
 
 namespace Streamkit.Web {
+    public class ViewController : Controller {
+        public ViewResult CreateView() {
+            return this.View();
+        }
+
+        public ViewResult CreateView(string viewName) {
+            return this.View(viewName);
+        }
+    }
+
+
     public abstract class HttpRequest {
         protected WebRequest request;
         protected HttpWebResponse response;
@@ -79,8 +91,6 @@ namespace Streamkit.Web {
 
 
     public class PostRequest : HttpRequest {
-        private byte[] body;
-
         public PostRequest(string url) : base(url) { }
 
         public override string Method {
@@ -208,6 +218,10 @@ namespace Streamkit.Web {
             }
 
             return "?" + String.Join("&", kvpStrings.ToArray());
+        }
+
+        public string ToPostString() {
+            return this.ToString().Substring(1);
         }
     }
 }
