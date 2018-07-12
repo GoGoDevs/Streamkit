@@ -20,6 +20,7 @@ namespace Streamkit {
         public static string OAuthRedirect;
         public static string AppPath;
         public static string AESKey;
+        public static DatabaseCredentials DatabaseCredentials;
 
 
         public static void Configure() {
@@ -55,10 +56,54 @@ namespace Streamkit {
 
             AESKey = (string)credentials["aes_key"];
 
+            DatabaseCredentials = new DatabaseCredentials(
+                    "localhost:3306", "streamkit", 
+                    (string)credentials["db_username"], (string)credentials["db_password"]);
         }
     }
 
 
+    public class DatabaseCredentials {
+        private string server;
+        private string database;
+        private string username;
+        private string password;
+
+        public DatabaseCredentials(
+                string server,  string database, 
+                string username, string password) {
+            this.server = server;
+            this.username = username;
+            this.password = password;
+        }
+
+        public string Server {
+            get { return this.server; }
+        }
+
+        public string Database {
+            get { return this.database; }
+        }
+
+        public string Username {
+            get { return this.username; }
+        }
+
+        public string Password {
+            get { return this.password; }
+        }
+        
+        public string ConnectionString {
+            get {
+                string str = "";
+                str += "Server=" + this.server + ";";
+                str += "databse=" + this.database + ";";
+                str += "UID=" + this.username + ";";
+                str += "password=" + this.password + ";";
+                return str;
+            }
+        }
+    }
 
 
     public class OAuthCredentials {

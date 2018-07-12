@@ -36,7 +36,8 @@ namespace Streamkit.Controllers {
 
             // Create a new streamkit account for this user.
             string token = TwitchOAuth.GetToken(code, state);
-            TwitchOAuth.Validate(token);
+
+            Tuple<string, string> accountInfo = TwitchOAuth.Validate(token);
 
             return RedirectToAction("MyAccount", "Index");
         }

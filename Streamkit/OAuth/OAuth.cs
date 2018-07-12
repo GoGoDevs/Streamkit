@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿using System;
+using System.Net;
 
 using Newtonsoft.Json.Linq;
 
@@ -26,7 +27,7 @@ namespace Streamkit.OAuth {
             return (string)resp["access_token"];
         }
 
-        public static void Validate(string token) {
+        public static Tuple<string, string> Validate(string token) {
             GetRequest req = new GetRequest("https://api.twitch.tv/kraken");
 
             req.AddHeader(HttpRequestHeader.Authorization, "OAuth " + token);
@@ -35,6 +36,7 @@ namespace Streamkit.OAuth {
             JObject resp = req.GetResponseJson();
             string userId = (string)resp["token"]["user_id"];
             string username = (string)resp["token"]["user_name"];
+            return new Tuple<string, string>(userId, username);
         }
     }
 }
