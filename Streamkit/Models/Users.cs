@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
+using Streamkit.Database;
+using MySql.Data.MySqlClient;
+
 namespace Streamkit.Models
 {
     public class User {
@@ -15,6 +18,16 @@ namespace Streamkit.Models
     public static class UserManager {
         public static User GetUser(string id) {
             throw new NotImplementedException();
+        }
+
+        public static void AddUser(string twitchId, string twitchUsername) {
+            using (DatabaseConnection conn = new DatabaseConnection()) {
+                // TODO...
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandText = "";
+                cmd.Parameters.AddWithValue("", null);
+                throw new NotImplementedException();
+            }
         }
     }
 }
