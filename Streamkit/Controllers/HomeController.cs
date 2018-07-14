@@ -4,11 +4,13 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Streamkit.Models;
+
+using Streamkit.Core;
+using Streamkit.Web;
 
 namespace Streamkit.Controllers
 {
-    public class HomeController : Controller
+    public class HomeController : WebController
     {
         public IActionResult Index()
         {

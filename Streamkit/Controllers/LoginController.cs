@@ -12,7 +12,7 @@ using Streamkit.OAuth;
 using Streamkit.Crypto;
 
 namespace Streamkit.Controllers {
-    public class LoginController : Controller {
+    public class LoginController : WebController {
         public IActionResult Index() {
             UrlParams param = new UrlParams();
             param.Add("client_id", Config.TwitchOAuth.ClientId);

@@ -6,10 +6,19 @@ using System.Collections;
 using System.Collections.Generic;
 
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json.Linq;
 
 namespace Streamkit.Web {
-    public class ViewController : Controller {
+    public class WebController : Controller {
+        public static ILoggerFactory LoggerFactory;
+
+        protected ILogger logger;
+
+        public WebController() {
+            this.logger = LoggerFactory.CreateLogger("Controller");
+        }
+
         public ViewResult CreateView() {
             return this.View();
         }

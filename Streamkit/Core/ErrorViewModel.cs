@@ -1,6 +1,6 @@
 using System;
 
-namespace Streamkit.Models
+namespace Streamkit.Core
 {
     public class ErrorViewModel
     {

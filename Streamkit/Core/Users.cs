@@ -6,8 +6,7 @@ using System.Threading.Tasks;
 using Streamkit.Database;
 using MySql.Data.MySqlClient;
 
-namespace Streamkit.Models
-{
+namespace Streamkit.Core {
     public class User {
         private string userId;
         private string twitchId;
