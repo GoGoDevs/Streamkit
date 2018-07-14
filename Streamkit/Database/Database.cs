@@ -7,6 +7,7 @@ namespace Streamkit.Database {
         private static DatabaseConnection instance;
 
         private MySqlConnection connection;
+        private MySqlTransaction transaction;
 
         public DatabaseConnection() {
             this.connection = new MySqlConnection(
@@ -18,6 +19,19 @@ namespace Streamkit.Database {
         public MySqlConnection Connection {
             get { return this.connection; }
         }
+
+        public void BeginTransaction() {
+            this.transaction = this.connection.BeginTransaction();
+        }
+
+        public void Rollback() {
+            this.transaction.Rollback();
+        }
+
+        public void Commit() {
+            this.transaction.Commit();
+        }
+
 
         #region IDisposable Support
         private bool disposedValue = false; // To detect redundant calls

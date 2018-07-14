@@ -6,8 +6,10 @@ using System.Collections;
 using System.Collections.Generic;
 
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json.Linq;
+using MySql.Data.MySqlClient;
 
 namespace Streamkit.Web {
     public class WebController : Controller {
@@ -25,6 +27,13 @@ namespace Streamkit.Web {
 
         public ViewResult CreateView(string viewName) {
             return this.View(viewName);
+        }
+
+        public override void OnActionExecuted(ActionExecutedContext filterContext) {
+            // Close database connection...
+
+
+            base.OnActionExecuted(filterContext);
         }
     }
 
