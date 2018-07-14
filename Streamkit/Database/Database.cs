@@ -20,6 +20,12 @@ namespace Streamkit.Database {
             get { return this.connection; }
         }
 
+        public MySqlCommand CreateCommand() {
+            MySqlCommand cmd = new MySqlCommand();
+            cmd.Connection = this.connection;
+            return cmd;
+        }
+
         public void BeginTransaction() {
             this.transaction = this.connection.BeginTransaction();
         }

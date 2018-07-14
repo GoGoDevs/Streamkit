@@ -44,7 +44,7 @@ namespace Streamkit.Core {
     public static class UserManager {
         public static User GetUser(string userId) {
             using (DatabaseConnection conn = new DatabaseConnection()) {
-                MySqlCommand cmd = new MySqlCommand();
+                MySqlCommand cmd = conn.CreateCommand();
                 cmd.CommandText = "SELECT user_id, twitch_id, twitch_username, twitch_token "
                                 + "FROM view_users WHERE user_id = @id";
                 cmd.Parameters.AddWithValue("@id", userId);
@@ -65,7 +65,7 @@ namespace Streamkit.Core {
 
         public static User GetUserTwitch(string twitchId) {
             using (DatabaseConnection conn = new DatabaseConnection()) {
-                MySqlCommand cmd = new MySqlCommand();
+                MySqlCommand cmd = conn.CreateCommand();
                 cmd.CommandText = "SELECT user_id, twitch_id, twitch_username, twitch_token "
                                 + "FROM view_users WHERE twitch_id = @id";
                 cmd.Parameters.AddWithValue("@id", twitchId);
@@ -86,7 +86,7 @@ namespace Streamkit.Core {
 
         public static bool UserExists(string userId) {
             using (DatabaseConnection conn = new DatabaseConnection()) {
-                MySqlCommand cmd = new MySqlCommand();
+                MySqlCommand cmd = conn.CreateCommand();
                 cmd.CommandText = "SELECT user_id FROM view_users WHERE twitch_id = @id";
                 cmd.Parameters.AddWithValue("@id", userId);
                 MySqlDataReader reader = cmd.ExecuteReader();
@@ -96,7 +96,7 @@ namespace Streamkit.Core {
 
         public static bool TwitchUserExists(string twitchId) {
             using (DatabaseConnection conn = new DatabaseConnection()) {
-                MySqlCommand cmd = new MySqlCommand();
+                MySqlCommand cmd = conn.CreateCommand();
                 cmd.CommandText = "SELECT twitch_id FROM view_users WHERE twitch_id = @id";
                 cmd.Parameters.AddWithValue("@id", twitchId);
                 MySqlDataReader reader = cmd.ExecuteReader();
@@ -109,14 +109,14 @@ namespace Streamkit.Core {
                 conn.BeginTransaction();
 
                 try {
-                    MySqlCommand cmd = new MySqlCommand();
+                    MySqlCommand cmd = conn.CreateCommand();
                     cmd.CommandText = "INSERT INTO users (user_id, twitch_id) "
                                     + "VALUES (@userid, @twitchid)";
                     cmd.Parameters.AddWithValue("@userid", user.UserId);
                     cmd.Parameters.AddWithValue("@twitchid", user.TwitchId);
                     cmd.ExecuteNonQuery();
 
-                    cmd = new MySqlCommand();
+                    cmd = conn.CreateCommand();
                     cmd.CommandText = "INSERT INTO users_twitch (twitch_id, user_id, twitch_username, twitch_token) "
                                     + "VALUES (@twitchid, @userid, @username, @token)";
                     cmd.Parameters.AddWithValue("@twitchid", user.TwitchId);
@@ -136,9 +136,9 @@ namespace Streamkit.Core {
 
         public static void UpdateUser(User user) {
             using (DatabaseConnection conn = new DatabaseConnection()) {
-                MySqlCommand cmd = new MySqlCommand();
+                MySqlCommand cmd = conn.CreateCommand();
                 cmd.CommandText = "UPDATE users_twitch "
-                                + "SET twitch_username = @username, token = @token";
+                                + "SET twitch_username = @username, twitch_token = @token";
                 cmd.Parameters.AddWithValue("@username", user.TwitchUsername);
                 cmd.Parameters.AddWithValue("@token", AES.Encrypt(user.TwitchToken));
                 cmd.ExecuteNonQuery();

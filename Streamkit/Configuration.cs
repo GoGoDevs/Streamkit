@@ -57,7 +57,7 @@ namespace Streamkit {
             AESKey = (string)credentials["aes_key"];
 
             DatabaseCredentials = new DatabaseCredentials(
-                    "localhost:3306", "streamkit", 
+                    "localhost", 3306, "streamkit", 
                     (string)credentials["db_username"], (string)credentials["db_password"]);
         }
     }
@@ -65,20 +65,27 @@ namespace Streamkit {
 
     public class DatabaseCredentials {
         private string server;
+        private int port;
         private string database;
         private string username;
         private string password;
 
         public DatabaseCredentials(
-                string server,  string database, 
+                string server, int port, string database,
                 string username, string password) {
             this.server = server;
+            this.port = port;
+            this.database = database;
             this.username = username;
             this.password = password;
         }
 
         public string Server {
             get { return this.server; }
+        }
+
+        public int Port {
+            get { return this.port; }
         }
 
         public string Database {
@@ -97,7 +104,8 @@ namespace Streamkit {
             get {
                 string str = "";
                 str += "Server=" + this.server + ";";
-                str += "databse=" + this.database + ";";
+                str += "Port=" + this.port + ";";
+                str += "database=" + this.database + ";";
                 str += "UID=" + this.username + ";";
                 str += "password=" + this.password + ";";
                 return str;

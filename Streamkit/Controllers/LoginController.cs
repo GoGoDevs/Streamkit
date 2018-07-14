@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 
 using Newtonsoft.Json.Linq;
 
+using Streamkit.Core;
 using Streamkit.Web;
 using Streamkit.OAuth;
 using Streamkit.Crypto;
@@ -38,6 +39,8 @@ namespace Streamkit.Controllers {
             string token = TwitchOAuth.GetToken(code, state);
 
             Tuple<string, string> accountInfo = TwitchOAuth.Validate(token);
+
+            UserManager.UpsertUser(accountInfo.Item1, accountInfo.Item2, token);
 
             return RedirectToAction("MyAccount", "Index");
         }
