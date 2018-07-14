@@ -40,6 +40,27 @@ namespace Streamkit.Core {
         }
     }
 
+
+    public static class SessionManager {
+        public static Dictionary<string, User> Sessions = new Dictionary<string, User>();
+
+        public static string CreateSession(User user) {
+            string sessionId = TokenGenerator.Generate();
+            while (Sessions.ContainsKey(sessionId)) {
+                sessionId = TokenGenerator.Generate();
+            }
+            Sessions[sessionId] = user;
+            return sessionId;
+        }
+
+        public static User GetUser(string sessionId) {
+            if (Sessions.ContainsKey(sessionId)) {
+                return Sessions[sessionId];
+            }
+            return null;
+        }        
+    }
+
     
     public static class UserManager {
         public static User GetUser(string userId) {
