@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Net;
+using System.Web;
 using System.Text;
 using System.Collections;
 using System.Collections.Generic;
@@ -9,7 +10,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json.Linq;
-using MySql.Data.MySqlClient;
+
+using Streamkit.Core;
+using Streamkit.Crypto;
 
 namespace Streamkit.Web {
     public class WebController : Controller {
@@ -34,6 +37,27 @@ namespace Streamkit.Web {
 
 
             base.OnActionExecuted(filterContext);
+        }
+    }
+
+
+    public class SessionManager  {
+        public static Dictionary<string, User> Sessions = new Dictionary<string, User>();
+
+        public static string CreateSession(User user) {
+            string sessionId = TokenGenerator.Generate();
+            while (Sessions.ContainsKey(sessionId)) {
+                sessionId = TokenGenerator.Generate();
+            }
+            Sessions[sessionId] = user;
+            return sessionId;
+        }
+
+        public static User GetUser(string sessionId) {
+            if (Sessions.ContainsKey(sessionId)) {
+                return Sessions[sessionId];
+            }
+            return null;
         }
     }
 
