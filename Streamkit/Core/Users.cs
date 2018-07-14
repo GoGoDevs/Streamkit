@@ -31,10 +31,12 @@ namespace Streamkit.Core {
 
         public string TwitchUsername {
             get { return this.twitchUsername; }
+            set { this.twitchUsername = value; }
         }
 
         public string TwitchToken {
             get { return this.twitchToken; }
+            set { this.twitchToken = value; }
         }
     }
 
@@ -57,6 +59,27 @@ namespace Streamkit.Core {
                         reader.GetString("user_id"), 
                         reader.GetString("twitch_id"), 
                         reader.GetString("twitch_username"), 
+                        AES.Decrypt(reader.GetString("twitch_token")));
+            }
+        }
+
+        public static User GetUserTwitch(string twitchId) {
+            using (DatabaseConnection conn = new DatabaseConnection()) {
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandText = "SELECT user_id, twitch_id, twitch_username, twitch_token "
+                                + "FROM view_users WHERE twitch_id = @id";
+                cmd.Parameters.AddWithValue("@id", twitchId);
+
+                MySqlDataReader reader = cmd.ExecuteReader();
+                if (!reader.HasRows) {
+                    throw new Exception("User " + twitchId + " does not exist.");
+                }
+
+                reader.Read();
+                return new User(
+                        reader.GetString("user_id"),
+                        reader.GetString("twitch_id"),
+                        reader.GetString("twitch_username"),
                         AES.Decrypt(reader.GetString("twitch_token")));
             }
         }
@@ -130,10 +153,18 @@ namespace Streamkit.Core {
                 // Make sure the user id we create is unique.
                 while (UserExists(userId)) {
                     userId = TokenGenerator.Generate();
-                } 
+                }
+
+                User user = new User(userId, twitchId, twitchUsername, twitchToken);
+                InsertUser(user);
             }
             else {
                 // Otherwise we update the twitch username and token.
+                User user = GetUserTwitch(twitchId);
+                user.TwitchUsername = twitchUsername;
+                user.TwitchToken = twitchToken;
+
+                UpdateUser(user);
             }
            
         }
