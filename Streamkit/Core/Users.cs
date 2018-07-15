@@ -145,7 +145,7 @@ namespace Streamkit.Core {
             }
         }
 
-        public static void UpsertUser(string twitchId, string twitchUsername, string twitchToken) {
+        public static User UpsertUser(string twitchId, string twitchUsername, string twitchToken) {
             if (!TwitchUserExists(twitchId)) {
                 // Run insert if user does not exist.
                 string userId = TokenGenerator.Generate();
@@ -157,6 +157,7 @@ namespace Streamkit.Core {
 
                 User user = new User(userId, twitchId, twitchUsername, twitchToken);
                 InsertUser(user);
+                return user;
             }
             else {
                 // Otherwise we update the twitch username and token.
@@ -165,6 +166,7 @@ namespace Streamkit.Core {
                 user.TwitchToken = twitchToken;
 
                 UpdateUser(user);
+                return user;
             }
            
         }

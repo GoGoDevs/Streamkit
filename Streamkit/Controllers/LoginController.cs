@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Session;
 
 using Newtonsoft.Json.Linq;
 
@@ -40,9 +41,12 @@ namespace Streamkit.Controllers {
 
             Tuple<string, string> accountInfo = TwitchOAuth.Validate(token);
 
-            UserManager.UpsertUser(accountInfo.Item1, accountInfo.Item2, token);
+            User user = UserManager.UpsertUser(accountInfo.Item1, accountInfo.Item2, token);
 
-            return RedirectToAction("MyAccount", "Index");
+            HttpContext.Session.Set("init", new byte[] { 0 });
+            SessionManager.AddSession(HttpContext.Session.Id, user);
+
+            return RedirectToAction("Index", "MyAccount");
         }
     }
 }

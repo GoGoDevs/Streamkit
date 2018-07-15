@@ -68,6 +68,7 @@ namespace Streamkit
             app.UseStaticFiles();
             app.UseCookiePolicy();
             app.UseSession();
+            app.UseStatusCodePages();
 
             app.UseMvc(routes =>
             {
