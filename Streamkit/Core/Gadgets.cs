@@ -9,6 +9,8 @@ namespace Streamkit.Core {
         public Gadget(string id, User user) {
 
         }
+
+        public abstract void Update();
     }
 
 
@@ -20,6 +22,14 @@ namespace Streamkit.Core {
 
         public Bitbar(string id, User user) : base(id, user) {
 
+        }
+
+        public override void Update() {
+            throw new NotImplementedException();
+        }
+
+        public void AddBits(int count) {
+            this.value += count;
         }
     }
 }
