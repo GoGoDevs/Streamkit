@@ -19,3 +19,31 @@ body {
         display: none;
     }
 }
+
+body {
+    background-color: #ddcfea;
+}
+
+.navbar {
+    background-color: #47015f;
+}
+
+.navbar-nav a{
+    color: white; 
+}
+
+.panel {
+    margin-top: 10px;
+    border-radius: 15px;
+    border-color: #47015f;
+    border-width: 1px;
+}
+
+.panel .panel-heading {
+    background-color: #47015f;
+    color: white;
+    font-size: 18px;
+    text-align: center;
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+}
