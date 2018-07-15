@@ -21,11 +21,11 @@ body {
 }
 
 body {
-    background-color: #ddcfea;
+    background-color: #cbced9;
 }
 
 .navbar {
-    background-color: #47015f;
+    background-color: #4c64c1;
 }
 
 .navbar-nav a{
@@ -35,15 +35,15 @@ body {
 .panel {
     margin-top: 10px;
     border-radius: 15px;
-    border-color: #47015f;
+    border-color: #4c64c1;
     border-width: 1px;
 }
 
-.panel .panel-heading {
-    background-color: #47015f;
-    color: white;
-    font-size: 18px;
-    text-align: center;
-    border-top-left-radius: 15px;
-    border-top-right-radius: 15px;
-}
+    .panel .panel-heading {
+        background-color: #4c64c1;
+        color: white;
+        font-size: 18px;
+        text-align: center;
+        border-top-left-radius: 15px;
+        border-top-right-radius: 15px;
+    }
