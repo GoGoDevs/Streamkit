@@ -93,12 +93,10 @@ namespace Streamkit.Core {
                 Bitbar bitbar = new Bitbar(reader.GetString("id"), user);
                 bitbar.Value = reader.GetInt32("value");
                 bitbar.MaxValue = reader.GetInt32("max_value");
-                //bitbar.Image = reader.Re
+                bitbar.Image = (byte[])reader["image"];
+                bitbar.Color = reader.GetString("color");
 
-                // TOOD
-                throw new NotImplementedException();
-
-                //return bitbar;
+                return bitbar;
             }
         }
 
