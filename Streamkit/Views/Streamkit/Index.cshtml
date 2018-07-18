@@ -1,27 +1,27 @@
 ﻿<div class="panel panel-default">
     <div class="panel-heading">Bitbar</div>   
     <div class="panel-body">
-        <form method="post" action="Streamkit/BitbarSubmit">
+        <form method="post" runat="server" enctype="multipart/form-data" action="Streamkit/BitbarSubmit">
             <div class="form-group">
                 <label for="value">Value</label>
-                <input type="text" class="form-control" name="value" value="" /><br />
+                <input type="text" class="form-control" name="value" value="@ViewBag.Bitbar.Value" /><br />
             </div>
 
             <div class="form-group">
                 <label for="maxValue">Max value</label>
-                <input type="text" class="form-control" name="maxValue" value="" /><br />
+                <input type="text" class="form-control" name="max_value" value="@ViewBag.Bitbar.MaxValue" /><br />
             </div>
 
             <div class="form-group">
                 <label for="color">Color</label>
-                <input type="color" name="color" value="" /><br />
+                <input type="color" name="color" value="@("#" + ViewBag.Bitbar.Color)" /><br />
             </div>
 
             <hr />
 
             <div class="form-group">
                 <label for="image">Image file</label>
-                <input type="file" name="image">
+                <input type="file" runat="server" name="image">
             </div>
 
 

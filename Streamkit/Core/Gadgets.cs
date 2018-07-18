@@ -46,7 +46,7 @@ namespace Streamkit.Core {
         }
 
         public string Color {
-            get { return this.color; }
+            get { return this.color.Replace("#", ""); }
             set {
                 if (value.Replace("#", "").Length != 6) {
                     throw new Exception("Invalid color code.");
@@ -84,8 +84,9 @@ namespace Streamkit.Core {
                 cmd.Parameters.AddWithValue("@userid", user.UserId);
                 MySqlDataReader reader = cmd.ExecuteReader();
                 
+                // Create bitbar for user if one does not already exist.
                 if (!reader.HasRows) {
-                    throw new Exception("Bitbar for user " + user.UserId + " does not exist.");
+                    return CreateBitbar(user);
                 }
 
                 reader.Read();
@@ -93,7 +94,7 @@ namespace Streamkit.Core {
                 Bitbar bitbar = new Bitbar(reader.GetString("id"), user);
                 bitbar.Value = reader.GetInt32("value");
                 bitbar.MaxValue = reader.GetInt32("max_value");
-                bitbar.Image = (byte[])reader["image"];
+                bitbar.Image = reader.GetBytes("image");
                 bitbar.Color = reader.GetString("color");
 
                 return bitbar;
@@ -104,7 +105,7 @@ namespace Streamkit.Core {
             using (DatabaseConnection conn = new DatabaseConnection()) {
                 MySqlCommand cmd = conn.CreateCommand();
                 cmd.CommandText = "INSERT INTO gadget_bitbar "
-                                + "id, user_id, value, max_value, image, color "
+                                + "(id, user_id, value, max_value, image, color) "
                                 + "VALUES (@id, @userid, @val, @maxval, @img, @color)";
 
                 string id = TokenGenerator.Generate();

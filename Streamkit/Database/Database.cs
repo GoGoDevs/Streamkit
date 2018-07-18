@@ -60,4 +60,16 @@ namespace Streamkit.Database {
         }
         #endregion
     }
+
+
+    public static class MySqlDataClientExtensions {
+        public static byte[] GetBytes(this MySqlDataReader reader, string column) {
+            if (reader.IsDBNull(column)) return null;
+            return (byte[])reader[column];
+        }
+
+        public static bool IsDBNull(this MySqlDataReader reader, string column) {
+            return reader.IsDBNull(reader.GetOrdinal(column));
+        }
+    }
 }
