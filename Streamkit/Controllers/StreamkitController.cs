@@ -10,8 +10,15 @@ namespace Streamkit.Controllers
 {
     public class StreamkitController : WebController
     {
-        public IActionResult Index()
-        {
+        public IActionResult Index() {
+
+            // Get bitbar.
+
+
+            return View();
+        }
+
+        public IActionResult BitbarSubmit() {
             return View();
         }
     }

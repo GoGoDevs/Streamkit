@@ -60,4 +60,11 @@ namespace Streamkit.Database {
         }
         #endregion
     }
+
+    public static class MySqlDataReaderExtensions {
+        public static byte[] GetBlob(this MySqlDataReader reader, string col) {
+            // TODO.
+            throw new NotImplementedException();
+        }
+    }
 }
