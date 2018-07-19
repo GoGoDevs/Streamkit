@@ -9,34 +9,96 @@ using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore;
 using Newtonsoft.Json.Linq;
 
 using Streamkit.Core;
 using Streamkit.Crypto;
 
 namespace Streamkit.Web {
+    public abstract class RequestHandler<T> {
+        protected WebController controller;
+        protected Func<RequestHandler<T>, T> handler;
+        protected User user;
+
+        public RequestHandler(
+                WebController controller, Func<RequestHandler<T>, T> handler) {
+            this.controller = controller;
+            this.handler = handler;
+        }
+
+        public WebController Controller {
+            get { return this.controller; }
+        }
+
+        public User User {
+            get { return this.user; }
+        }
+
+        public Microsoft.AspNetCore.Http.HttpRequest Request {
+            get { return this.controller.Request; }
+        }
+
+        public Microsoft.AspNetCore.Http.HttpResponse Response {
+            get { return this.Response; }
+        }
+
+        public dynamic View {
+            get { return this.controller.ViewBag; }
+        }
+
+        public T Handle() {
+            try {
+                // Get user making request.
+                this.user = SessionManager.GetUser(
+                        this.controller.HttpContext.Session.Id);
+                // Add user to view bag so we can controller visible items in main layout.
+                this.controller.ViewBag.User = user;
+
+                this.handleMiddleware();
+                return this.handler(this);
+
+            } catch(Exception ex) {
+                // TODO: Log.
+
+                return this.handleError(ex);
+            }
+        }
+
+        /// <summary>
+        /// This should be overriden if you would like to run additional middleware.
+        /// </summary>
+        protected virtual void handleMiddleware() {
+            return;
+        }
+
+        protected abstract T handleError(Exception ex);
+
+
+
+
+        
+    }
+
+
+    public class ActionRequestHandler : RequestHandler<IActionResult> {
+        public ActionRequestHandler(
+                WebController controller,
+                Func<RequestHandler<IActionResult>, IActionResult> handler) : base(controller, handler) { }
+
+
+        protected override IActionResult handleError(Exception ex) {
+            this.Response.StatusCode = 500;
+            return Controller.View("Error.cshtml");
+        }
+    }
+
+
+
+    // In case we ever need to add our own behaviour to Controller.
     public class WebController : Controller {
-        public static ILoggerFactory LoggerFactory;
-
-        protected ILogger logger;
-
         public WebController() {
-            this.logger = LoggerFactory.CreateLogger("Controller");
-        }
-
-        public ViewResult CreateView() {
-            return this.View();
-        }
-
-        public ViewResult CreateView(string viewName) {
-            return this.View(viewName);
-        }
-
-        public override void OnActionExecuted(ActionExecutedContext filterContext) {
-            // Close database connection...
-
-
-            base.OnActionExecuted(filterContext);
+            
         }
     }
 

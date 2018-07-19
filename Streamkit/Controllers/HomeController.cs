@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 
 using Streamkit.Core;
 using Streamkit.Web;
+using Streamkit.Routes;
 
 namespace Streamkit.Controllers
 {
@@ -14,12 +11,16 @@ namespace Streamkit.Controllers
     {
         public IActionResult Index()
         {
-            return View();
+            ActionRequestHandler req = new ActionRequestHandler(
+                    this, HomeRoutes.Index);
+            return req.Handle();
         }
 
         public IActionResult Privacy()
         {
-            return View();
+            ActionRequestHandler req = new ActionRequestHandler(
+                    this, HomeRoutes.Privacy);
+            return req.Handle();
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
