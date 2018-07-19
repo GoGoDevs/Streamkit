@@ -5,6 +5,8 @@ using TwitchLib.Client.Events;
 using TwitchLib.Client.Extensions;
 using TwitchLib.Client.Models;
 
+using Streamkit.Core;
+
 namespace Streamkit.Twitch {
     public class TwitchBot {
         public static TwitchBot Instance;
@@ -18,12 +20,17 @@ namespace Streamkit.Twitch {
             client = new TwitchClient();
             client.Initialize(credentials);
 
+            client.OnJoinedChannel += onJoinedChannel;
             client.OnMessageReceived += onMessageReceived;
             client.OnNewSubscriber += onNewSubscriber;
             client.OnReSubscriber += onResubsriber;
             client.OnGiftedSubscription += onGiftedSubscription;
 
             client.Connect();
+
+            foreach (string username in UserManager.GetTwitchUsernames()) {
+                this.JoinChannel(username);
+            }
 
             // For testing
             this.JoinChannel("gogomic");
@@ -35,8 +42,12 @@ namespace Streamkit.Twitch {
             this.client.JoinChannel(channelName);
         }
 
+        private void onJoinedChannel(object sender, OnJoinedChannelArgs e) {
+            Logger.Log("Joined channel " + e.Channel);
+        }
+
         private void onMessageReceived(object sender, OnMessageReceivedArgs e) {
-            Logger.Log("Message received: " + e.ChatMessage);
+            Logger.Log("Message received: " + e.ChatMessage.Message);
         }
 
         private void onNewSubscriber(object sender, OnNewSubscriberArgs e) {

@@ -12,6 +12,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.DependencyInjection;
 
 using Streamkit.Web;
+using Streamkit.Twitch;
 
 namespace Streamkit
 {
@@ -64,6 +65,7 @@ namespace Streamkit
 
             Config.Configure();
             Logger.Instance = new Logger();
+            TwitchBot.Instance = new TwitchBot();
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();

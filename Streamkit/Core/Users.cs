@@ -85,6 +85,20 @@ namespace Streamkit.Core {
             }
         }
 
+        public static List<string> GetTwitchUsernames() {
+            using (DatabaseConnection conn = new DatabaseConnection()) {
+                MySqlCommand cmd = conn.CreateCommand();
+                cmd.CommandText = "SELECT twitch_username FROM users_twitch";
+                MySqlDataReader reader = cmd.ExecuteReader();
+
+                List<string> usernames = new List<string>();
+                while (reader.Read()) {
+                    usernames.Add(reader.GetString("twitch_username"));
+                }
+                return usernames;
+            }
+        }
+
         public static bool UserExists(string userId) {
             using (DatabaseConnection conn = new DatabaseConnection()) {
                 MySqlCommand cmd = conn.CreateCommand();
