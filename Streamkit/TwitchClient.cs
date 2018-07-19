@@ -6,12 +6,12 @@ using TwitchLib.Client.Extensions;
 using TwitchLib.Client.Models;
 
 namespace Streamkit.Twitch {
-    public class Bot {
-        public static Bot Instance;
+    public class TwitchBot {
+        public static TwitchBot Instance;
 
         private TwitchClient client;
 
-        public Bot() {
+        public TwitchBot() {
             ConnectionCredentials credentials = new ConnectionCredentials(
                     "BotZura", Config.TwitchChatToken);
 

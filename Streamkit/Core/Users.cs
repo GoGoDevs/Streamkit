@@ -6,6 +6,7 @@ using MySql.Data.MySqlClient;
 
 using Streamkit.Database;
 using Streamkit.Crypto;
+using Streamkit.Twitch;
 
 namespace Streamkit.Core {
     public class User {
@@ -132,6 +133,8 @@ namespace Streamkit.Core {
                     throw;
                 }
             }
+
+            TwitchBot.Instance.JoinChannel(user.TwitchUsername);
         }
 
         public static void UpdateUser(User user) {
