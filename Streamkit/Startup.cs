@@ -63,6 +63,7 @@ namespace Streamkit
             }
 
             Config.Configure();
+            Logger.Instance = new Logger();
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();

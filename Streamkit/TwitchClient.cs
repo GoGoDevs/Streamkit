@@ -36,19 +36,19 @@ namespace Streamkit.Twitch {
         }
 
         private void onMessageReceived(object sender, OnMessageReceivedArgs e) {
-            throw new NotImplementedException();
+            Logger.Log("Message received: " + e.ChatMessage);
         }
 
         private void onNewSubscriber(object sender, OnNewSubscriberArgs e) {
-            throw new NotImplementedException();
+            Logger.Log("New subscriber in " + e.Channel);
         }
 
         private void onResubsriber(object sender, OnReSubscriberArgs e) {
-            throw new NotImplementedException();
+            Logger.Log("Resubscriber in " + e.Channel);
         }
 
         private void onGiftedSubscription(object sender, OnGiftedSubscriptionArgs e) {
-            throw new NotImplementedException();
+            Logger.Log("Gifted subscription in " + e.Channel);
         }
     }
 }

@@ -59,8 +59,7 @@ namespace Streamkit.Web {
                 return this.handler(this);
 
             } catch(Exception ex) {
-                // TODO: Log.
-
+                Logger.Log("Error in request " + this.Request.Path + ": " + ex.Message);
                 return this.handleError(ex);
             }
         }
