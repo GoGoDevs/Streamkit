@@ -64,24 +64,32 @@ namespace Streamkit.Core {
             }
         }
 
-        public static User GetUserTwitch(string twitchId) {
+        public static User GetUserTwitch(string username) {
             using (DatabaseConnection conn = new DatabaseConnection()) {
                 MySqlCommand cmd = conn.CreateCommand();
                 cmd.CommandText = "SELECT user_id, twitch_id, twitch_username, twitch_token "
-                                + "FROM view_users WHERE twitch_id = @id";
-                cmd.Parameters.AddWithValue("@id", twitchId);
+                                + "FROM view_users WHERE twitch_username = @username";
+                cmd.Parameters.AddWithValue("@username", username);
 
                 MySqlDataReader reader = cmd.ExecuteReader();
                 if (!reader.HasRows) {
-                    throw new Exception("User " + twitchId + " does not exist.");
+                    throw new Exception("User " + username + " does not exist.");
                 }
 
                 reader.Read();
+
+                // Try catch so that we can still continue on testing with dummy tokens.
+                string token = null;
+                try {
+                    token = AES.Decrypt(reader.GetString("twitch_token"));
+                }
+                catch { }
+
                 return new User(
                         reader.GetString("user_id"),
                         reader.GetString("twitch_id"),
                         reader.GetString("twitch_username"),
-                        AES.Decrypt(reader.GetString("twitch_token")));
+                        token);
             }
         }
 
@@ -178,7 +186,7 @@ namespace Streamkit.Core {
             }
             else {
                 // Otherwise we update the twitch username and token.
-                User user = GetUserTwitch(twitchId);
+                User user = GetUserTwitch(twitchUsername);
                 user.TwitchUsername = twitchUsername;
                 user.TwitchToken = twitchToken;
 
