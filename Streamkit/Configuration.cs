@@ -38,11 +38,11 @@ namespace Streamkit {
             JObject config = null;
             if (Environment == Env.Development) {
                 config = JObject.Parse(
-                        File.ReadAllText(AppPath + "./appsettings.Development.json"));
+                        File.ReadAllText(AppPath + "/appsettings.Development.json"));
             }
             if (Environment == Env.Production) {
                 config = JObject.Parse(
-                        File.ReadAllText(AppPath + "./appsettings.Production.json"));
+                        File.ReadAllText(AppPath + "/appsettings.Production.json"));
             }
 
             RootUrl = (string)config["root_url"];
