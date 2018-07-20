@@ -56,7 +56,7 @@ namespace Streamkit.Twitch {
                 if (e.ChatMessage.Bits > 0) {
                     Logger.Log(e.ChatMessage.Bits + " bits cheered in " + e.ChatMessage.Channel);
                     User user = UserManager.GetUserTwitch(e.ChatMessage.Channel);
-                    if (user != null) BitbarManager.AddBits(user, e.ChatMessage.Bits);
+                    BitbarManager.AddBits(user, e.ChatMessage.Bits);
                 }
             }
             catch (Exception ex) {
@@ -67,6 +67,9 @@ namespace Streamkit.Twitch {
         private void onNewSubscriber(object sender, OnNewSubscriberArgs e) {
             try {
                 Logger.Log("New subscriber in " + e.Channel);
+
+                User user = UserManager.GetUserTwitch(e.Channel);
+                BitbarManager.AddBits(user, subPlanToBits(e.Subscriber.SubscriptionPlan));
             }
             catch (Exception ex) {
                 Logger.Log(ex);
@@ -76,6 +79,9 @@ namespace Streamkit.Twitch {
         private void onResubsriber(object sender, OnReSubscriberArgs e) {
             try {
                 Logger.Log("Resubscriber in " + e.Channel);
+
+                User user = UserManager.GetUserTwitch(e.Channel);
+                BitbarManager.AddBits(user, subPlanToBits(e.ReSubscriber.SubscriptionPlan));
             }
             catch (Exception ex) {
                 Logger.Log(ex);
@@ -85,14 +91,22 @@ namespace Streamkit.Twitch {
         private void onGiftedSubscription(object sender, OnGiftedSubscriptionArgs e) {
             try {
                 Logger.Log("Gifted subscription in " + e.Channel);
+
+                // TODO: Find out if this event is fired by itself or alongside another.
+
+                //User user = UserManager.GetUserTwitch(e.Channel);
+                //// It seems you can't gift sub tiers higher than one yet
+                //BitbarManager.AddBits(user, 250);
             }
             catch (Exception ex) {
                 Logger.Log(ex);
             }
         }
 
-        private int subTierToBits() {
-
+        private static int subPlanToBits(SubscriptionPlan plan) {
+            if (plan == SubscriptionPlan.Tier3) return 1000;
+            if (plan == SubscriptionPlan.Tier2) return 500;
+            return 250;
         }
     }
 }

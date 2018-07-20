@@ -140,8 +140,10 @@ namespace Streamkit.Core {
             using (DatabaseConnection conn = new DatabaseConnection()) {
                 MySqlCommand cmd = conn.CreateCommand();
                 cmd.CommandText = "UPDATE gadget_bitbar "
-                                + "SET value = value + @count";
-                cmd.Parameters.AddWithValue("@count", count);     
+                                + "SET value = value + @count "
+                                + "WHERE user_id = @userid";
+                cmd.Parameters.AddWithValue("@count", count);
+                cmd.Parameters.AddWithValue("@userid", user.UserId);
                 cmd.ExecuteNonQuery();
 
                 Logger.Log("Added " + count + " to bitbar of " + user.UserId);
