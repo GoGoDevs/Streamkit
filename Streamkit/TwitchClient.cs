@@ -43,23 +43,56 @@ namespace Streamkit.Twitch {
         }
 
         private void onJoinedChannel(object sender, OnJoinedChannelArgs e) {
-            Logger.Log("Joined channel " + e.Channel);
+            try {
+                Logger.Log("Joined channel " + e.Channel);
+
+            } catch(Exception ex) {
+                Logger.Log(ex);
+            }
         }
 
         private void onMessageReceived(object sender, OnMessageReceivedArgs e) {
-            Logger.Log("Message received: " + e.ChatMessage.Message);
+            try {
+                if (e.ChatMessage.Bits > 0) {
+                    Logger.Log(e.ChatMessage.Bits + " bits cheered in " + e.ChatMessage.Channel);
+                    User user = UserManager.GetUserTwitch(e.ChatMessage.Channel);
+                    if (user != null) BitbarManager.AddBits(user, e.ChatMessage.Bits);
+                }
+            }
+            catch (Exception ex) {
+                Logger.Log(ex);
+            }
         }
 
         private void onNewSubscriber(object sender, OnNewSubscriberArgs e) {
-            Logger.Log("New subscriber in " + e.Channel);
+            try {
+                Logger.Log("New subscriber in " + e.Channel);
+            }
+            catch (Exception ex) {
+                Logger.Log(ex);
+            }
         }
 
         private void onResubsriber(object sender, OnReSubscriberArgs e) {
-            Logger.Log("Resubscriber in " + e.Channel);
+            try {
+                Logger.Log("Resubscriber in " + e.Channel);
+            }
+            catch (Exception ex) {
+                Logger.Log(ex);
+            }
         }
 
         private void onGiftedSubscription(object sender, OnGiftedSubscriptionArgs e) {
-            Logger.Log("Gifted subscription in " + e.Channel);
+            try {
+                Logger.Log("Gifted subscription in " + e.Channel);
+            }
+            catch (Exception ex) {
+                Logger.Log(ex);
+            }
+        }
+
+        private int subTierToBits() {
+
         }
     }
 }

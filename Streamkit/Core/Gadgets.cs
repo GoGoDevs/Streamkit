@@ -58,10 +58,6 @@ namespace Streamkit.Core {
         public override void Update() {
             throw new NotImplementedException();
         }
-
-        public void AddBits(int count) {
-            this.value += count;
-        }
     }
 
 
@@ -137,6 +133,18 @@ namespace Streamkit.Core {
                 cmd.Parameters.AddWithValue("@color", bitbar.Color);
 
                 cmd.ExecuteNonQuery();
+            }
+        }
+
+        public static void AddBits(User user, int count) {
+            using (DatabaseConnection conn = new DatabaseConnection()) {
+                MySqlCommand cmd = conn.CreateCommand();
+                cmd.CommandText = "UPDATE gadget_bitbar "
+                                + "SET value = value + @count";
+                cmd.Parameters.AddWithValue("@count", count);     
+                cmd.ExecuteNonQuery();
+
+                Logger.Log("Added " + count + " to bitbar of " + user.UserId);
             }
         }
     }
