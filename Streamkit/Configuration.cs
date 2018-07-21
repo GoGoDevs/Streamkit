@@ -55,7 +55,7 @@ namespace Streamkit {
             AESKey = (string)credentials["aes_key"];
 
             DatabaseCredentials = new DatabaseCredentials(
-                    "localhost", 3306, "streamkit", 
+                    "127.0.0.1", 3306, "streamkit", 
                     (string)credentials["db_username"], (string)credentials["db_password"]);
         }
     }
