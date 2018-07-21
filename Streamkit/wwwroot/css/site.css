@@ -28,22 +28,45 @@ body {
     background-color: #4c64c1;
 }
 
-.navbar-nav a{
-    color: white; 
+.navbar-header a{
+    color: white !important;
 }
 
-.panel {
-    margin-top: 10px;
-    border-radius: 15px;
+.navbar-nav a{
+    color: white !important; 
+}
+
+.navbar-text {
+    color: white !important;
+}
+
+.glyphicon-info-sign {
+    color: white !important;
+}
+
+.panel-default {
     border-color: #4c64c1;
     border-width: 1px;
 }
 
-    .panel .panel-heading {
-        background-color: #4c64c1;
-        color: white;
-        font-size: 18px;
-        text-align: center;
-        border-top-left-radius: 15px;
-        border-top-right-radius: 15px;
-    }
+.panel-default .panel-heading {
+    background-color: #4c64c1;
+    color: white;
+}
+
+.panel-heading {
+    font-size: 18px;
+    text-align: center;
+}
+
+.panel-body {
+    padding-top: 0px;
+}
+
+.panel-warning .panel-heading {
+ 
+}
+
+.panel-warning .panel-body {
+    text-align: center;
+}
