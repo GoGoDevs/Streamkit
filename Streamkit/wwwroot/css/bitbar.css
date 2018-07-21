@@ -1,0 +1,25 @@
+body {
+    background-color: #36393E;
+    font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+
+.bit-container {
+    box-sizing: border-box;
+    /*width: 457px;*/
+}
+
+.bit-canvas {
+    box-sizing: border-box;
+    /*height: 49px;*/
+    /*border: 1px solid red;*/
+}
+
+.bit-text {
+    box-sizing: border-box;
+    position: relative;
+    /*left: 55px;*/
+    width: 402px;
+    text-align: center;
+    /*border: 1px solid red;*/
+    font-size: 24px;
+}

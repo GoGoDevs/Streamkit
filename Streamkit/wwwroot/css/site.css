@@ -70,3 +70,7 @@ body {
 .panel-warning .panel-body {
     text-align: center;
 }
+
+.small-input {
+    width: 100px;
+}

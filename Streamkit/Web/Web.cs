@@ -40,7 +40,7 @@ namespace Streamkit.Web {
         }
 
         public Microsoft.AspNetCore.Http.HttpResponse Response {
-            get { return this.Response; }
+            get { return this.controller.Response; }
         }
 
         public dynamic View {
@@ -72,11 +72,6 @@ namespace Streamkit.Web {
         }
 
         protected abstract T handleError(Exception ex);
-
-
-
-
-        
     }
 
 
@@ -88,7 +83,7 @@ namespace Streamkit.Web {
 
         protected override IActionResult handleError(Exception ex) {
             this.Response.StatusCode = 500;
-            return Controller.View("Error.cshtml");
+            return Controller.View("~/Views/Error.cshtml");
         }
     }
 

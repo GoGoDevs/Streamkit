@@ -24,7 +24,8 @@ namespace Streamkit.Core {
         private int value = 0;
         private int maxValue = 1000;
         private byte[] image = null;
-        private string color = "#00FF00";
+        private string targetColor = "#000000";
+        private string fillColor = "#00FF00";
 
         public Bitbar(string id, User user) : base(id, user) {
 
@@ -45,13 +46,23 @@ namespace Streamkit.Core {
             set { this.image = value; }
         }
 
-        public string Color {
-            get { return this.color.Replace("#", ""); }
+        public string TargetColor {
+            get { return this.targetColor.Replace("#", ""); }
             set {
                 if (value.Replace("#", "").Length != 6) {
-                    throw new Exception("Invalid color code.");
+                    this.targetColor = "#000000";
                 }
-                this.color = value;
+                this.targetColor = value;
+            }
+        }
+
+        public string FillColor {
+            get { return this.fillColor.Replace("#", ""); }
+            set {
+                if (value.Replace("#", "").Length != 6) {
+                    this.fillColor = "#00FF00";
+                }
+                this.fillColor = value;
             }
         }
 
@@ -75,7 +86,7 @@ namespace Streamkit.Core {
         public static Bitbar GetBitbar(User user) {
             using (DatabaseConnection conn = new DatabaseConnection()) {
                 MySqlCommand cmd = conn.CreateCommand();
-                cmd.CommandText = "SELECT id, value, max_value, image, color "
+                cmd.CommandText = "SELECT id, value, max_value, image, target_color, fill_color "
                                 + "FROM gadget_bitbar WHERE user_id = @userid";
                 cmd.Parameters.AddWithValue("@userid", user.UserId);
                 MySqlDataReader reader = cmd.ExecuteReader();
@@ -91,7 +102,8 @@ namespace Streamkit.Core {
                 bitbar.Value = reader.GetInt32("value");
                 bitbar.MaxValue = reader.GetInt32("max_value");
                 bitbar.Image = reader.GetBytes("image");
-                bitbar.Color = reader.GetString("color");
+                bitbar.TargetColor = reader.GetString("target_color");
+                bitbar.FillColor = reader.GetString("fill_color");
 
                 return bitbar;
             }
@@ -101,8 +113,8 @@ namespace Streamkit.Core {
             using (DatabaseConnection conn = new DatabaseConnection()) {
                 MySqlCommand cmd = conn.CreateCommand();
                 cmd.CommandText = "INSERT INTO gadget_bitbar "
-                                + "(id, user_id, value, max_value, image, color) "
-                                + "VALUES (@id, @userid, @val, @maxval, @img, @color)";
+                                + "(id, user_id, value, max_value, image, target_color, fill_color) "
+                                + "VALUES (@id, @userid, @val, @maxval, @img, @tcolor, @fcolor)";
 
                 string id = TokenGenerator.Generate();
                 while (BitbarExists(id)) {
@@ -115,7 +127,8 @@ namespace Streamkit.Core {
                 cmd.Parameters.AddWithValue("@val", bitbar.Value);
                 cmd.Parameters.AddWithValue("@maxval", bitbar.MaxValue);
                 cmd.Parameters.AddWithValue("@img", bitbar.Image);
-                cmd.Parameters.AddWithValue("@color", bitbar.Color);
+                cmd.Parameters.AddWithValue("@tcolor", bitbar.TargetColor);
+                cmd.Parameters.AddWithValue("@fcolor", bitbar.FillColor);
 
                 cmd.ExecuteNonQuery();
                 return bitbar;
@@ -126,11 +139,13 @@ namespace Streamkit.Core {
             using (DatabaseConnection conn = new DatabaseConnection()) {
                 MySqlCommand cmd = conn.CreateCommand();
                 cmd.CommandText = "UPDATE gadget_bitbar "
-                                + "SET value = @val, max_value = @maxval, image = @img, color = @color";
+                                + "SET value = @val, max_value = @maxval, image = @img, "
+                                + "target_color = @tcolor, fill_color = @fcolor";
                 cmd.Parameters.AddWithValue("@val", bitbar.Value);
                 cmd.Parameters.AddWithValue("@maxval", bitbar.MaxValue);
                 cmd.Parameters.AddWithValue("@img", bitbar.Image);
-                cmd.Parameters.AddWithValue("@color", bitbar.Color);
+                cmd.Parameters.AddWithValue("@tcolor", bitbar.TargetColor);
+                cmd.Parameters.AddWithValue("@fcolor", bitbar.FillColor);
 
                 cmd.ExecuteNonQuery();
             }

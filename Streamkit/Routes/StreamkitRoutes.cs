@@ -24,7 +24,8 @@ namespace Streamkit.Routes {
             try {
                 int value = int.Parse(form["value"]);
                 int maxValue = int.Parse(form["max_value"]);
-                string color = form["color"].ToString();
+                string targetColor = form["target_color"].ToString();
+                string fillColor = form["fill_color"].ToString();
 
                 byte[] image = null;
                 if (form.Files.Count > 0) {
@@ -37,7 +38,8 @@ namespace Streamkit.Routes {
                 bitbar.Value = value;
                 bitbar.MaxValue = maxValue;
                 if (image != null) bitbar.Image = image;
-                bitbar.Color = color;
+                bitbar.TargetColor = targetColor;
+                bitbar.FillColor = fillColor;
 
                 BitbarManager.UpdateBitbar(bitbar);
             }

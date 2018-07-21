@@ -1,20 +1,31 @@
-﻿<div class="panel panel-default">
-    <div class="panel panel-heading">Bitbar</div>   
+﻿@section Scripts {
+    <script type="text/javascript" src="~/js/streamkit.js"></script>
+}
+
+<div class="panel panel-default">
+    <div class="panel panel-heading">Bitbar</div>
     <div class="panel-body">
         <form method="post" runat="server" enctype="multipart/form-data" action="Streamkit/BitbarSubmit">
             <div class="form-group">
                 <label for="value">Value</label>
-                <input type="text" class="form-control" name="value" value="@ViewBag.Bitbar.Value" /><br />
+                <input type="text" class="form-control small-input" name="value" value="@ViewBag.Bitbar.Value" /><br />
             </div>
 
             <div class="form-group">
                 <label for="maxValue">Max value</label>
-                <input type="text" class="form-control" name="max_value" value="@ViewBag.Bitbar.MaxValue" /><br />
+                <input type="text" class="form-control small-input" name="max_value" value="@ViewBag.Bitbar.MaxValue" /><br />
             </div>
 
             <div class="form-group">
-                <label for="color">Color</label>
-                <input type="color" name="color" value="@("#" + ViewBag.Bitbar.Color)" /><br />
+                <label for="color">Target Color</label><br />
+                <input type="color" id="target_color" value="@("#" + ViewBag.Bitbar.TargetColor)" /><br />
+                <input type="text" id="target_color_hex" name="target_color" class="form-control small-input" value="@("#" + ViewBag.Bitbar.TargetColor)">
+            </div>
+
+            <div class="form-group">
+                <label for="color">Fill Color</label><br />
+                <input type="color" id="fill_color" value="@("#" + ViewBag.Bitbar.FillColor)" /><br />
+                <input type="text" id="fill_color_hex" name="fill_color" class="form-control small-input" value="@("#" + ViewBag.Bitbar.FillColor)">
             </div>
 
             <hr />
