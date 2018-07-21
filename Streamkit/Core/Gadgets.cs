@@ -178,13 +178,14 @@ namespace Streamkit.Core {
                 MySqlCommand cmd = conn.CreateCommand();
                 cmd.CommandText = "UPDATE gadget_bitbar "
                                 + "SET value = @val, max_value = @maxval, image = @img, "
-                                + "target_color = @tcolor, fill_color = @fcolor";
+                                + "target_color = @tcolor, fill_color = @fcolor "
+                                + "WHERE id = @id";
                 cmd.Parameters.AddWithValue("@val", bitbar.Value);
                 cmd.Parameters.AddWithValue("@maxval", bitbar.MaxValue);
                 cmd.Parameters.AddWithValue("@img", bitbar.Image);
                 cmd.Parameters.AddWithValue("@tcolor", bitbar.TargetColor);
                 cmd.Parameters.AddWithValue("@fcolor", bitbar.FillColor);
-
+                cmd.Parameters.AddWithValue("@id", bitbar.Id);
                 cmd.ExecuteNonQuery();
             }
         }
