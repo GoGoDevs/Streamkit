@@ -1,6 +1,6 @@
 body {
     background-color: #36393E;
-    font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+    font: 16px "Lucida Grande", Helvetica, Arial, sans-serif;
 }
 
 .bit-container {
@@ -21,5 +21,7 @@ body {
     width: 402px;
     text-align: center;
     /*border: 1px solid red;*/
-    font-size: 24px;
+    font-size: 30px;
+    text-shadow: 0 0 4px black, 0 0 4px black, 0 0 4px black, 0 0 4px black, 0 0 4px black, 0 0 4px black, 0 0 4px black, 0 0 4px black, 0 0 4px black, 0 0 4px black, 0 0 4px black, 0 0 4px black, 0 0 4px black, 0 0 4px black, 0 0 4px black, 0 0 4px black, 0 0 4px black, 0 0 4px black, 0 0 4px black, 0 0 4px black;
+    font-family: "Ebrima";
 }

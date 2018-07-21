@@ -13,6 +13,7 @@ namespace Streamkit.Hubs {
         private Dictionary<User, IClientProxy> users = new Dictionary<User, IClientProxy>();
 
         public override async Task OnConnectedAsync() {
+            await Clients.Caller.SendAsync("request_source", "test");
             await RequestSource(Clients.Caller);
             await base.OnConnectedAsync();
         }
@@ -25,7 +26,7 @@ namespace Streamkit.Hubs {
             await client.SendAsync("request_source", "");
         }
 
-        public async Task ReceiveSource(string user, string source) {
+        public async Task ReceiveSource(string source) {
             JObject json = JObject.Parse(source);
             Bitbar bitbar = BitbarManager.GetBitbar((string)json["source_id"]);
             users[bitbar.User] = Clients.Caller;
@@ -39,8 +40,8 @@ namespace Streamkit.Hubs {
             source["value"] = bitbar.Value;
             source["max_value"] = bitbar.MaxValue;
             source["image"] = Base64.Encode(bitbar.Image);
-            source["target_color"] = bitbar.TargetColor;
-            source["fill_color"] = bitbar.FillColor;
+            source["target_color"] = "#" + bitbar.TargetColor;
+            source["fill_color"] = "#" + bitbar.FillColor;
 
             await this.users[bitbar.User].SendAsync("update_source", source.ToString());
         }

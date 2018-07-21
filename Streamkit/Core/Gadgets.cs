@@ -95,7 +95,7 @@ namespace Streamkit.Core {
         public static Bitbar GetBitbar(string id) {
             using (DatabaseConnection conn = new DatabaseConnection()) {
                 MySqlCommand cmd = conn.CreateCommand();
-                cmd.CommandText = "user_id, value, max_value, image, target_color, fill_color "
+                cmd.CommandText = "SELECT user_id, value, max_value, image, target_color, fill_color "
                                 + "FROM gadget_bitbar WHERE id = @id";
 
 
@@ -110,7 +110,7 @@ namespace Streamkit.Core {
 
                 User user = UserManager.GetUser(reader.GetString("user_id"));
 
-                Bitbar bitbar = new Bitbar(reader.GetString("id"), user);
+                Bitbar bitbar = new Bitbar(id, user);
                 bitbar.Value = reader.GetInt32("value");
                 bitbar.MaxValue = reader.GetInt32("max_value");
                 bitbar.Image = reader.GetBytes("image");

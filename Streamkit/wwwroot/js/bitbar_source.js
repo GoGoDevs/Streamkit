@@ -1,34 +1,39 @@
-﻿const conn = new SignalR.HubConnectionBuilder().withUrl('/bitbarHub').build();
+﻿$(document).ready(function () {
+    var conn = new signalR.HubConnectionBuilder().withUrl('/bitbarHub').build();
 
-let bitbar = new Bitbar(
-    'canvas', 'title', 'count',
-    'my title',
-    '#00ff00', '#00ff00',
-    0, 1000,
-    '#000000',
-    null); 
-
-
-conn.on('request_souce', () => {
-    let source = {
-        'type': 'bitbar',
-        'source_id': getParameterByName('id', location.href)
-    };
-
-    conn.invoke('ProvideSource', JSON.stringify(source));
-});
-
-
-conn.on('update_source', (sourceJson) => {
-    source = JSON.parse(sourceJson);
-
-    bitbar = new Bitbar(
+    var bitbar = new Bitbar(
         'canvas', 'title', 'count',
-        'my title',
-        bitbar['fill_color'], bitbar['fill_color'],
+        '',
+        '#00ff00', '#00ff00',
         0, 1000,
-        bitbar['target_color'],
-        bitbar['image']); 
+        '#000000',
+        null);
+
+
+    conn.on('request_source', () => {
+        let source = {
+            'type': 'bitbar',
+            'source_id': getParameterByName('id', location.href)
+        };
+
+        conn.invoke('ReceiveSource', JSON.stringify(source)).catch(err => console.error(err.toString()));;
+    });
+
+
+    conn.on('update_source', (sourceJson) => {
+        source = JSON.parse(sourceJson);
+
+        bitbar = new Bitbar(
+            'canvas', 'title', 'count',
+            '',
+            source['fill_color'], source['target_color'],
+            source['value'], source['max_value'],
+            source['target_color'],
+            source['image']);
+        bitbar.updateCurrentBitCount(source['value']);
+    });
+
+    conn.start().catch(err => console.error(err.toString()));
 });
 
 
