@@ -13,7 +13,16 @@ namespace Streamkit.Core {
         protected User user;
 
         public Gadget(string id, User user) {
+            this.id = id;
+            this.user = user;
+        }
 
+        public string Id {
+            get { return this.id; }
+        }
+
+        public User User {
+            get { return this.user; }
         }
 
         public abstract void Update();
@@ -80,6 +89,35 @@ namespace Streamkit.Core {
                 cmd.Parameters.AddWithValue("@id", id);
                 MySqlDataReader reader = cmd.ExecuteReader();
                 return reader.HasRows;
+            }
+        }
+
+        public static Bitbar GetBitbar(string id) {
+            using (DatabaseConnection conn = new DatabaseConnection()) {
+                MySqlCommand cmd = conn.CreateCommand();
+                cmd.CommandText = "user_id, value, max_value, image, target_color, fill_color "
+                                + "FROM gadget_bitbar WHERE id = @id";
+
+
+                cmd.Parameters.AddWithValue("@id", id);
+                MySqlDataReader reader = cmd.ExecuteReader();
+
+                if (!reader.HasRows) {
+                    throw new Exception("Bitbar " + id + " does not exist.");
+                }
+
+                reader.Read();
+
+                User user = UserManager.GetUser(reader.GetString("user_id"));
+
+                Bitbar bitbar = new Bitbar(reader.GetString("id"), user);
+                bitbar.Value = reader.GetInt32("value");
+                bitbar.MaxValue = reader.GetInt32("max_value");
+                bitbar.Image = reader.GetBytes("image");
+                bitbar.TargetColor = reader.GetString("target_color");
+                bitbar.FillColor = reader.GetString("fill_color");
+
+                return bitbar;
             }
         }
 

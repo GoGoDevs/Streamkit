@@ -1,4 +1,4 @@
-function BitBar(canvasId, titleId, countId, title, color, fillColor, currentBits, maxBits, fillAreaColor, progressImage) {
+function Bitbar(canvasId, titleId, countId, title, color, fillColor, currentBits, maxBits, fillAreaColor, progressImage) {
     this.title = title;
     this.currentBits = currentBits;
     this.maxBits = maxBits;
@@ -25,11 +25,7 @@ function BitBar(canvasId, titleId, countId, title, color, fillColor, currentBits
         this.render();
     };
     this.updateCurrentBitCount = function(currentBits) {
-        if (currentBits > this.maxBits) {
-            this.currentBits = this.maxBits;
-        } else {
-            this.currentBits = currentBits;
-        }
+        this.currentBits = currentBits;
         this.render();
     };
     this.updateMaxBitCount = function(maxBits) {
@@ -154,5 +150,5 @@ function BitBar(canvasId, titleId, countId, title, color, fillColor, currentBits
         this.render();
     }.bind(this);
 
-    this.originalImage.src = (typeof progressImage !== 'undefined') ? progressImage : './img/frame.png';
+    this.originalImage.src = 'data:image/png;base64,' + progressImage;
 }

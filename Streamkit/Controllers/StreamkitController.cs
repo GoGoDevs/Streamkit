@@ -13,6 +13,12 @@ namespace Streamkit.Controllers
             return req.Handle();
         }
 
+        public IActionResult BitbarSource() {
+            ActionRequestHandler req = new ActionRequestHandler(
+                    this, StreamkitRoutes.BitbarSource);
+            return req.Handle();
+        }
+
         public IActionResult BitbarSubmit() {
             ActionRequestHandler req = new ActionRequestHandler(
                     this, StreamkitRoutes.BitbarSubmit);

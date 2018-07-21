@@ -16,6 +16,12 @@ namespace Streamkit.Routes {
             return req.Controller.View();
         }
 
+        public static IActionResult BitbarSource(RequestHandler<IActionResult> req) {
+            string id = req.Request.Query["id"];
+
+            return req.Controller.View();
+        }
+
         public static IActionResult BitbarSubmit(RequestHandler<IActionResult> req) {
             IFormCollection form = req.Request.Form;
 
