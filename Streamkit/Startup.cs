@@ -67,7 +67,6 @@ namespace Streamkit
             Logger.Instance = new Logger();
             TwitchBot.Instance = new TwitchBot();
 
-            app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseCookiePolicy();
             app.UseSession();
