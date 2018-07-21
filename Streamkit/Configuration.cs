@@ -101,11 +101,11 @@ namespace Streamkit {
         public string ConnectionString {
             get {
                 string str = "";
-                str += "Server=" + this.server + ";";
-                str += "Port=" + this.port + ";";
-                str += "database=" + this.database + ";";
-                str += "UID=" + this.username + ";";
-                str += "password=" + this.password + ";";
+                str += "Server=" + this.server + "; ";
+                str += "Port=" + this.port + "; ";
+                str += "Database=" + this.database + "; ";
+                str += "Uid=" + this.username + "; ";
+                str += "Pwd=" + this.password + ";";
                 return str;
             }
         }
