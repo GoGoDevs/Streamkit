@@ -101,7 +101,7 @@ namespace Streamkit.Twitch {
         }
 
         private static int subPlanToBits(SubscriptionPlan plan) {
-            if (plan == SubscriptionPlan.Tier3) return 1000;
+            if (plan == SubscriptionPlan.Tier3) return 1250;
             if (plan == SubscriptionPlan.Tier2) return 500;
             return 250;
         }
