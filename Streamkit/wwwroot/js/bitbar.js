@@ -29,9 +29,6 @@ function Bitbar(canvasId, titleId, countId, title, color, fillColor, currentBits
         this.render();
     };
     this.updateMaxBitCount = function(maxBits) {
-        if (maxBits < this.currentBits) {
-            this.currentBits = maxBits;
-        }
         this.maxBits = maxBits;
         this.render();
     };
