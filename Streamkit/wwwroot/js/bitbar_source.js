@@ -52,7 +52,7 @@ function connectionLoop() {
         bitbar.updateFillAreaColor(source['target_color']);
     });
 
-    conn.start().catch(err => console.error(err.toString()));
+    conn.start({ transport: "longPolling" }).catch(err => console.error(err.toString()));
 }
 
 
