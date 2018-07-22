@@ -29,11 +29,17 @@ namespace Streamkit {
             JObject oauth = JObject.Parse(
                     File.ReadAllText(AppPath + "/credentials/oauth.json"));
 
+            JObject credentials = JObject.Parse(
+                 File.ReadAllText(AppPath + "/credentials/credentials.json"));
+
             JObject twitch = oauth["twitch"] as JObject;
             TwitchOAuth = new OAuthCredentials(
                     (string)twitch["client_id"], (string)twitch["secret"]);
             TwitchChatToken = (string)twitch["chat_token"];
 
+            if ((string)credentials["env"] == "prod") {
+                Environment = Env.Production;
+            }
 
             JObject config = null;
             if (Environment == Env.Development) {
@@ -48,9 +54,6 @@ namespace Streamkit {
             RootUrl = (string)config["root_url"];
             TwitchScope = (string)config["oauth"]["twitch"]["scope"];
             OAuthRedirect = RootUrl + (string)config["oauth"]["redirect"];
-
-            JObject credentials = JObject.Parse(
-                    File.ReadAllText(AppPath + "/credentials/credentials.json"));
 
             AESKey = (string)credentials["aes_key"];
 
