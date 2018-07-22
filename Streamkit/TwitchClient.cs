@@ -32,9 +32,6 @@ namespace Streamkit.Twitch {
                 this.JoinChannel(username);
             }
 
-            // For testing
-            this.JoinChannel("gogomic");
-
             Instance = this;
         }
 
