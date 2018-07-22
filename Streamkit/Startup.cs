@@ -85,6 +85,8 @@ namespace Streamkit
             app.UseSignalR(routes => {
                 routes.MapHub<BitbarHub>("/bitbarHub");
             });
+
+           
         }
     }
 }

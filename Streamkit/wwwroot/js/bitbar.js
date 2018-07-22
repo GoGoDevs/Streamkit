@@ -69,7 +69,7 @@ function Bitbar(canvasId, titleId, countId, title, color, fillColor, currentBits
     };
     this.renderBitCount = function() {
         this.countElement.style.color = this.color.hex;
-        this.countElement.innerText = 'B ' + this.currentBits + ' / ' + this.maxBits;
+        this.countElement.innerText = this.currentBits + ' / ' + this.maxBits;
     };
     this.renderOriginalImage = function() {
         let x = 0,

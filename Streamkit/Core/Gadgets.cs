@@ -6,6 +6,7 @@ using MySql.Data.MySqlClient;
 
 using Streamkit.Database;
 using Streamkit.Crypto;
+using Streamkit.Hubs;
 
 namespace Streamkit.Core {
     public abstract class Gadget {
@@ -188,6 +189,8 @@ namespace Streamkit.Core {
                 cmd.Parameters.AddWithValue("@id", bitbar.Id);
                 cmd.ExecuteNonQuery();
             }
+
+            BitbarHub.UpdateSource(bitbar);
         }
 
         public static void AddBits(User user, int count) {
@@ -202,6 +205,9 @@ namespace Streamkit.Core {
 
                 Logger.Log("Added " + count + " to bitbar of " + user.UserId);
             }
+
+            Bitbar bitbar = BitbarManager.GetBitbar(user);
+            BitbarHub.UpdateSource(bitbar);
         }
     }
 }
