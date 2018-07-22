@@ -163,9 +163,11 @@ namespace Streamkit.Core {
             using (DatabaseConnection conn = new DatabaseConnection()) {
                 MySqlCommand cmd = conn.CreateCommand();
                 cmd.CommandText = "UPDATE users_twitch "
-                                + "SET twitch_username = @username, twitch_token = @token";
+                                + "SET twitch_username = @username, twitch_token = @token "
+                                + "WHERE user_id = @id";
                 cmd.Parameters.AddWithValue("@username", user.TwitchUsername);
                 cmd.Parameters.AddWithValue("@token", AES.Encrypt(user.TwitchToken));
+                cmd.Parameters.AddWithValue("@id", user.UserId);
                 cmd.ExecuteNonQuery();
             }
         }
