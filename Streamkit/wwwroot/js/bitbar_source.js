@@ -19,20 +19,8 @@ $(document).ready(function () {
 // I'm to tired to deal with microsoft removing features for no good reason.
 // Only the first update event works, so let's turn this into continous polling until we figure it out.
 function connectionLoop() {
-    conn = new signalR.HubConnectionBuilder().withUrl('/bitbarHub').build();
-
-    conn.on('request_source', () => {
-        let source = {
-            'type': 'bitbar',
-            'source_id': getParameterByName('id', location.href)
-        };
-
-        conn.invoke('ReceiveSource', JSON.stringify(source)).catch(err => console.error(err.toString()));;
-    });
-
-    conn.on('update_source', (sourceJson) => {
-        source = JSON.parse(sourceJson);
-
+    let reqstr = "./getbitbar?id=" + getParameterByName('id', location.href);
+    $.getJSON(reqstr, function (source) {
         if (!loaded) {
             bitbar = new Bitbar(
                 'canvas', 'title', 'count',
@@ -51,8 +39,6 @@ function connectionLoop() {
         bitbar.updateFillColor(source['target_color']);
         bitbar.updateFillAreaColor(source['target_color']);
     });
-
-    conn.start({ transport: "longPolling" }).catch(err => console.error(err.toString()));
 }
 
 
