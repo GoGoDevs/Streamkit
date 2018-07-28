@@ -123,6 +123,9 @@ namespace Streamkit.Web {
         protected Dictionary<HttpRequestHeader, string> headers
                 = new Dictionary<HttpRequestHeader, string>();
 
+        protected Dictionary<string, string> strHeaders
+                = new Dictionary<string, string>();
+
         public HttpRequest(string url) {
             this.url = url;
         }
@@ -133,6 +136,10 @@ namespace Streamkit.Web {
 
         public void AddHeader(HttpRequestHeader header, string value) {
             this.headers.Add(header, value);
+        }
+
+        public void AddHeader(string header, string value) {
+            this.strHeaders.Add(header, value);
         }
 
         public abstract string Method { get; }
@@ -161,6 +168,10 @@ namespace Streamkit.Web {
             this.request.Method = this.Method;
 
             foreach (KeyValuePair<HttpRequestHeader, string> header in this.headers) {
+                this.request.Headers.Add(header.Key, header.Value);
+            }
+
+            foreach (KeyValuePair<string, string> header in this.strHeaders) {
                 this.request.Headers.Add(header.Key, header.Value);
             }
 

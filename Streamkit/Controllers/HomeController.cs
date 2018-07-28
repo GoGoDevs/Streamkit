@@ -9,23 +9,26 @@ namespace Streamkit.Controllers
 {
     public class HomeController : WebController
     {
-        public IActionResult Index()
-        {
+        public IActionResult Index() {
             ActionRequestHandler req = new ActionRequestHandler(
                     this, HomeRoutes.Index);
             return req.Handle();
         }
 
-        public IActionResult Privacy()
-        {
+        public IActionResult Privacy() {
             ActionRequestHandler req = new ActionRequestHandler(
                     this, HomeRoutes.Privacy);
             return req.Handle();
         }
 
+        public IActionResult Subscribers() {
+            ActionRequestHandler req = new ActionRequestHandler(
+                    this, HomeRoutes.Subscribers);
+            return req.Handle();
+        }
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
+        public IActionResult Error() {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
     }

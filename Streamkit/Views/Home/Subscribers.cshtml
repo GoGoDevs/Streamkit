@@ -1,0 +1,25 @@
+﻿@using Newtonsoft.Json.Linq
+
+@{
+    ViewData["Title"] = "Subscribers";
+}
+
+<div class="panel panel-default">
+    <div class="panel panel-heading">Subscribers</div>
+
+    <div class="panel-body">
+        <div class="table-responsive">
+            <table class="table">
+                <tbody>
+                    @foreach (JToken sub in ViewBag.Subs) {
+
+                        <tr class="user-list-item">
+                            <td><img src="@((string)sub["user"]["logo"])"></td>
+                            <td><span class="user-list-name">@((string)sub["user"]["name"])</span></td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

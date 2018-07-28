@@ -63,6 +63,22 @@ body {
     padding-top: 0px;
 }
 
+.user-list-item {
+    vertical-align: middle;
+}
+
+.user-list-item img {
+    width: 100%;
+    max-width: 150px;
+    vertical-align: middle;
+}
+
+.user-list-name {
+    padding-top: 130px;
+    font-size: 32px;
+    vertical-align: middle;
+}
+
 .panel-warning .panel-heading {
  
 }
