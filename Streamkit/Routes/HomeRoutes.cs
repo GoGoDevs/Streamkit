@@ -16,7 +16,7 @@ namespace Streamkit.Routes {
         }
 
         public static IActionResult Subscribers(RequestHandler<IActionResult> req) {
-            User user = UserManager.GetUserTwitch("gogomic");
+            User user = UserManager.GetUserTwitch("damouryouknow");
 
             // TODO: Chain requests if gogomic ever gets over 100 subs.
             string url = "https://api.twitch.tv/kraken/channels/" + user.TwitchId 

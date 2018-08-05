@@ -7,19 +7,23 @@
 <div class="panel panel-default">
     <div class="panel panel-heading">Subscribers</div>
 
-    <div class="panel-body">
-        <div class="table-responsive">
-            <table class="table">
-                <tbody>
-                    @foreach (JToken sub in ViewBag.Subs) {
+    @foreach (JToken sub in ViewBag.Subs) {
+        <a href="@("https://twitch.tv/" + (string)sub["user"]["name"])" class="nostyle">
+            <div class="panel user-list-item">
+                <div class="row row-flex">
+                    <div class="col-md-2">
+                        <img src="@((string)sub["user"]["logo"])" style="width: 100px;">
+                    </div>
 
-                        <tr class="user-list-item">
-                            <td><img src="@((string)sub["user"]["logo"])"></td>
-                            <td><span class="user-list-name">@((string)sub["user"]["name"])</span></td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
-        </div>
-    </div>
+                    <div class="row-center vertical-hecking-centered">
+                        <div class="col-md-8">
+                            <span class="user-list-name">@((string)sub["user"]["display_name"])</span><br />
+                            <span class="user-list-desc">@((string)sub["user"]["bio"])</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </a>
+    }
 </div>
+        
