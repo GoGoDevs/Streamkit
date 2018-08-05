@@ -20,7 +20,7 @@ namespace Streamkit.Routes {
             int limit = 100;
             int total = int.MaxValue;
 
-            User user = UserManager.GetUserTwitch("damouryouknow");
+            User user = UserManager.GetUserTwitch("gogomic");
 
             JArray subs = new JArray();
             HashSet<string> ids = new HashSet<string>();
