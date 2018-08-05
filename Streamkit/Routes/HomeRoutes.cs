@@ -29,6 +29,7 @@ namespace Streamkit.Routes {
 
             JObject resp = getReq.GetResponseJson();
             JArray subs = (JArray)resp["subscriptions"];
+            subs.RemoveAt(0);
 
             req.View.Subs = subs;
             return req.Controller.View();
