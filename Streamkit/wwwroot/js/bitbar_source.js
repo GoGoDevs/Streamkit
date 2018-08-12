@@ -1,5 +1,6 @@
 ﻿var conn;
 var bitbar;
+var bitbarImage;
 var loaded = false;
 
 $(document).ready(function () {
@@ -19,7 +20,7 @@ $(document).ready(function () {
 // I'm to tired to deal with microsoft removing features for no good reason.
 // Only the first update event works, so let's turn this into continous polling until we figure it out.
 function connectionLoop() {
-    let reqstr = "./getbitbar?id=" + getParameterByName('id', location.href);
+    let reqstr = "../API/Streamkit/BitbarSource?id=" + getParameterByName('id', location.href);
     $.getJSON(reqstr, function (source) {
         if (!loaded) {
             bitbar = new Bitbar(
@@ -38,6 +39,9 @@ function connectionLoop() {
         bitbar.updateColor(source['fill_color']);
         bitbar.updateFillColor(source['target_color']);
         bitbar.updateFillAreaColor(source['target_color']);
+    }).fail(function (jqxhr, textStatus, error) {
+        var err = textStatus + ", " + error;
+        console.log("Request Failed: " + err);
     });
 }
 

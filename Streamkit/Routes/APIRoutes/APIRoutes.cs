@@ -31,6 +31,10 @@ namespace Streamkit.Routes.API {
             JObject source = new JObject();
             source["source_id"] = bitbar.Id;
             source["image"] = Base64.Encode(bitbar.Image);
+            source["value"] = bitbar.Value;
+            source["max_value"] = bitbar.MaxValue;
+            source["target_color"] = "#" + bitbar.TargetColor;
+            source["fill_color"] = "#" + bitbar.FillColor;
 
             return source;
         }

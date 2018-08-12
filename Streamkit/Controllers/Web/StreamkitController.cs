@@ -24,12 +24,5 @@ namespace Streamkit.Controllers.Web
                     this, StreamkitRoutes.BitbarSubmit);
             return req.Handle();
         }
-
-        // TODO: Create API...
-        public IActionResult GetBitbar() {
-            ActionRequestHandler req = new ActionRequestHandler(
-                    this, StreamkitRoutes.GetBitbar);
-            return req.Handle();
-        }
     }
 }

@@ -58,20 +58,5 @@ namespace Streamkit.Routes.Web {
 
             return req.Controller.RedirectToAction("Index", "Streamkit");
         }
-
-        public static IActionResult GetBitbar(RequestHandler<IActionResult> req) {
-            string id = req.Request.Query["id"];
-
-            Bitbar bitbar = BitbarManager.GetBitbar(id);
-            JObject source = new JObject();
-            source["source_id"] = bitbar.Id;
-            source["value"] = bitbar.Value;
-            source["max_value"] = bitbar.MaxValue;
-            source["image"] = Base64.Encode(bitbar.Image);
-            source["target_color"] = "#" + bitbar.TargetColor;
-            source["fill_color"] = "#" + bitbar.FillColor;
-
-            return req.Controller.Content(source.ToString());
-        }
     }
 }
