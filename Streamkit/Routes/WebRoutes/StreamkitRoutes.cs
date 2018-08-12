@@ -11,7 +11,7 @@ using Streamkit.Utils;
 namespace Streamkit.Routes.Web {
     public static class StreamkitRoutes {
         public static IActionResult Index(RequestHandler<IActionResult> req) {
-            if (req.User == null) return req.Controller.Unauthorized();
+            if (req.User == null) throw new UnauthorizedException();
 
             Bitbar bitbar = BitbarManager.GetBitbar(req.User);
             req.View.Bitbar = bitbar;
@@ -28,7 +28,7 @@ namespace Streamkit.Routes.Web {
         public static IActionResult BitbarSubmit(RequestHandler<IActionResult> req) {
             IFormCollection form = req.Request.Form;
 
-            if (req.User == null) return req.Controller.Unauthorized();
+            if (req.User == null) throw new UnauthorizedException();
 
             try {
                 int value = int.Parse(form["value"]);
@@ -53,7 +53,7 @@ namespace Streamkit.Routes.Web {
                 BitbarManager.UpdateBitbar(bitbar);
             }
             catch (Exception ex) {
-                return req.Controller.BadRequest();
+                throw new BadRequestException();
             }
 
             return req.Controller.RedirectToAction("Index", "Streamkit");

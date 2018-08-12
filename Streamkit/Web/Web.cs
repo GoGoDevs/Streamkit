@@ -66,6 +66,12 @@ namespace Streamkit.Web {
                     HttpException httpEx = ex as HttpException;
                     this.Response.StatusCode = httpEx.StatusCode;
                 }
+                else if (ex is NotImplementedException) {
+                    this.Response.StatusCode = 501;
+                }
+                else {
+                    this.Response.StatusCode = 500;
+                }
 
                 return this.handleError(ex);
             }
@@ -89,7 +95,8 @@ namespace Streamkit.Web {
 
 
         protected override IActionResult handleError(Exception ex) {
-            this.Response.StatusCode = 500;
+            this.View.StatusCode = this.Response.StatusCode;
+            this.View.Message = ex.Message;
             return Controller.View("~/Views/Error.cshtml");
         }
     }
@@ -103,7 +110,7 @@ namespace Streamkit.Web {
         protected override JToken handleError(Exception ex) {
             JObject errObj = new JObject();
             errObj["error"] = ex.Message;
-            errObj["code"] = 500;
+            errObj["code"] = this.Response.StatusCode;
             return errObj as JToken;
         }
     }
@@ -373,7 +380,7 @@ namespace Streamkit {
             get { return 400; }
         }
 
-        public BadRequestException() { }
+        public BadRequestException() : base("Bad request") { }
 
         public BadRequestException(string message) : base(message) { }
     }
@@ -384,7 +391,7 @@ namespace Streamkit {
             get { return 401; }
         }
 
-        public UnauthorizedException() { }
+        public UnauthorizedException() : base("Unauthorized") { }
 
         public UnauthorizedException(string message) : base(message) { }
     }
@@ -395,7 +402,7 @@ namespace Streamkit {
             get { return 403; }
         }
 
-        public ForbiddenException() { }
+        public ForbiddenException() : base("Forbidden") { }
 
         public ForbiddenException(string message) : base(message) { }
     }
@@ -406,7 +413,7 @@ namespace Streamkit {
             get { return 404; }
         }
 
-        public NotFoundException() { }
+        public NotFoundException() : base("Not found") { }
 
         public NotFoundException(string message) : base(message) { }
     }
@@ -417,7 +424,7 @@ namespace Streamkit {
             get { return 405; }
         }
 
-        public MethodNotAllowedException() { }
+        public MethodNotAllowedException() : base("Method not allowed") { }
 
         public MethodNotAllowedException(string message) : base(message) { }
     }
@@ -428,7 +435,7 @@ namespace Streamkit {
             get { return 429; }
         }
 
-        public TooManyRequestsException() { }
+        public TooManyRequestsException() : base("Too many requests") { }
 
         public TooManyRequestsException(string message) : base(message) { }
     }

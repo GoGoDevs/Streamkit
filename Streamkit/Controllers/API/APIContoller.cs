@@ -13,5 +13,11 @@ namespace Streamkit.Controllers.Web {
                     this, APIRoutes.Bitbar);
             return req.Handle().ToString();
         }
+
+        public string BitbarSource() {
+            JsonRequestHandler req = new JsonRequestHandler(
+                    this, APIRoutes.BitbarSource);
+            return req.Handle().ToString();
+        }
     }
 }
