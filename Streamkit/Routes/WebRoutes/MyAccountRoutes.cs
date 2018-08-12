@@ -2,7 +2,7 @@
 
 using Streamkit.Web;
 
-namespace Streamkit.Routes {
+namespace Streamkit.Routes.Web {
     public static class MyAccountRoutes {
         public static IActionResult Index(RequestHandler<IActionResult> req) {
             if (req.User == null) return req.Controller.Unauthorized();

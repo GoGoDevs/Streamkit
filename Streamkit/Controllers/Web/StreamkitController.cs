@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
 using Streamkit.Web;
-using Streamkit.Routes;
+using Streamkit.Routes.Web;
 
-namespace Streamkit.Controllers
+namespace Streamkit.Controllers.Web
 {
     public class StreamkitController : WebController
     {

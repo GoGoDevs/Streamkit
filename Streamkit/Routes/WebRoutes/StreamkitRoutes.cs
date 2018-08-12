@@ -8,7 +8,7 @@ using Streamkit.Web;
 using Streamkit.Core;
 using Streamkit.Utils;
 
-namespace Streamkit.Routes {
+namespace Streamkit.Routes.Web {
     public static class StreamkitRoutes {
         public static IActionResult Index(RequestHandler<IActionResult> req) {
             if (req.User == null) return req.Controller.Unauthorized();
