@@ -17,17 +17,17 @@ using Streamkit.Crypto;
 
 namespace Streamkit.Web {
     public abstract class RequestHandler<T> {
-        protected WebController controller;
+        protected Controller controller;
         protected Func<RequestHandler<T>, T> handler;
         protected User user;
 
         public RequestHandler(
-                WebController controller, Func<RequestHandler<T>, T> handler) {
+                Controller controller, Func<RequestHandler<T>, T> handler) {
             this.controller = controller;
             this.handler = handler;
         }
 
-        public WebController Controller {
+        public Controller Controller {
             get { return this.controller; }
         }
 
@@ -58,8 +58,21 @@ namespace Streamkit.Web {
                 this.handleMiddleware();
                 return this.handler(this);
 
-            } catch(Exception ex) {
+            }
+            catch (Exception ex) { 
                 Logger.Log("Error in request " + this.Request.Path + ": " + ex.Message);
+
+                if (ex is HttpException) {
+                    HttpException httpEx = ex as HttpException;
+                    this.Response.StatusCode = httpEx.StatusCode;
+                }
+                else if (ex is NotImplementedException) {
+                    this.Response.StatusCode = 501;
+                }
+                else {
+                    this.Response.StatusCode = 500;
+                }
+
                 return this.handleError(ex);
             }
         }
@@ -82,22 +95,42 @@ namespace Streamkit.Web {
 
 
         protected override IActionResult handleError(Exception ex) {
-            this.Response.StatusCode = 500;
+            this.View.StatusCode = this.Response.StatusCode;
+            this.View.Message = ex.Message;
             return Controller.View("~/Views/Error.cshtml");
         }
     }
 
 
+    public class JsonRequestHandler : RequestHandler<JToken> {
+        public JsonRequestHandler(
+                APIController controller,
+                Func<RequestHandler<JToken>, JToken> handler) : base(controller, handler) { }
 
-    // In case we ever need to add our own behaviour to Controller.
-    public class WebController : Controller {
-        public WebController() {
-            
+        protected override JToken handleError(Exception ex) {
+            JObject errObj = new JObject();
+            errObj["error"] = ex.Message;
+            errObj["code"] = this.Response.StatusCode;
+            return errObj as JToken;
         }
     }
 
 
-    public class SessionManager  {
+    // In case we ever need to add our own behaviour to Controller.
+    public class WebController : Controller {
+        public WebController() {
+
+        }
+    }
+
+    public class APIController : Controller {
+        public APIController() {
+
+        }
+    }
+
+
+    public class SessionManager {
         private static Dictionary<string, User> Sessions = new Dictionary<string, User>();
 
         public static void AddSession(string id, User user) {
@@ -293,7 +326,7 @@ namespace Streamkit.Web {
         }
 
         public bool Remove(KeyValuePair<string, string> item) {
-            if (this.param.ContainsKey(item.Key) 
+            if (this.param.ContainsKey(item.Key)
                     && this.param[item.Key] == item.Value) {
                 return this.Remove(item.Key);
             }
@@ -327,5 +360,83 @@ namespace Streamkit.Web {
         public string ToPostString() {
             return this.ToString().Substring(1);
         }
+    }
+}
+
+
+namespace Streamkit {
+    public abstract class HttpException : Exception {
+        public abstract int StatusCode { get; }
+
+        public HttpException() { }
+
+        public HttpException(string message) : base(message) { }
+
+    }
+
+
+    public class BadRequestException : HttpException {
+        public override int StatusCode {
+            get { return 400; }
+        }
+
+        public BadRequestException() : base("Bad request") { }
+
+        public BadRequestException(string message) : base(message) { }
+    }
+
+
+    public class UnauthorizedException : HttpException {
+        public override int StatusCode {
+            get { return 401; }
+        }
+
+        public UnauthorizedException() : base("Unauthorized") { }
+
+        public UnauthorizedException(string message) : base(message) { }
+    }
+
+
+    public class ForbiddenException : HttpException {
+        public override int StatusCode {
+            get { return 403; }
+        }
+
+        public ForbiddenException() : base("Forbidden") { }
+
+        public ForbiddenException(string message) : base(message) { }
+    }
+
+
+    public class NotFoundException : HttpException {
+        public override int StatusCode {
+            get { return 404; }
+        }
+
+        public NotFoundException() : base("Not found") { }
+
+        public NotFoundException(string message) : base(message) { }
+    }
+
+
+    public class MethodNotAllowedException : HttpException {
+        public override int StatusCode {
+            get { return 405; }
+        }
+
+        public MethodNotAllowedException() : base("Method not allowed") { }
+
+        public MethodNotAllowedException(string message) : base(message) { }
+    }
+
+
+    public class TooManyRequestsException : HttpException {
+        public override int StatusCode {
+            get { return 429; }
+        }
+
+        public TooManyRequestsException() : base("Too many requests") { }
+
+        public TooManyRequestsException(string message) : base(message) { }
     }
 }

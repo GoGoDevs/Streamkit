@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
 using Streamkit.Web;
-using Streamkit.Routes;
+using Streamkit.Routes.Web;
 
-namespace Streamkit.Controllers
+namespace Streamkit.Controllers.Web
 {
     public class StreamkitController : WebController
     {
@@ -22,13 +22,6 @@ namespace Streamkit.Controllers
         public IActionResult BitbarSubmit() {
             ActionRequestHandler req = new ActionRequestHandler(
                     this, StreamkitRoutes.BitbarSubmit);
-            return req.Handle();
-        }
-
-        // TODO: Create API...
-        public IActionResult GetBitbar() {
-            ActionRequestHandler req = new ActionRequestHandler(
-                    this, StreamkitRoutes.GetBitbar);
             return req.Handle();
         }
     }

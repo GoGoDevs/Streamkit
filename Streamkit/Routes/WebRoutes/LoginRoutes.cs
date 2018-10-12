@@ -6,7 +6,7 @@ using Streamkit.Web;
 using Streamkit.Crypto;
 using Streamkit.OAuth;
 
-namespace Streamkit.Routes {
+namespace Streamkit.Routes.Web {
     public static class LoginRoutes {
         public static IActionResult Index(RequestHandler<IActionResult> req) {
             UrlParams param = new UrlParams();

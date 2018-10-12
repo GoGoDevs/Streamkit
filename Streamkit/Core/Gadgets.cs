@@ -104,7 +104,7 @@ namespace Streamkit.Core {
                 MySqlDataReader reader = cmd.ExecuteReader();
 
                 if (!reader.HasRows) {
-                    throw new Exception("Bitbar " + id + " does not exist.");
+                    throw new NotFoundException("Bitbar " + id + " does not exist.");
                 }
 
                 reader.Read();

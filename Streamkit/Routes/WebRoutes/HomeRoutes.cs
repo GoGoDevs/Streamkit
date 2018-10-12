@@ -6,7 +6,7 @@ using Newtonsoft.Json.Linq;
 using Streamkit.Web;
 using Streamkit.Core;
 
-namespace Streamkit.Routes {
+namespace Streamkit.Routes.Web {
     public static class HomeRoutes {
         public static IActionResult Index(RequestHandler<IActionResult> req) {
             return req.Controller.View();
