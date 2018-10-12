@@ -20,6 +20,7 @@ namespace Streamkit.Twitch {
             client = new TwitchClient();
             client.Initialize(credentials);
 
+            client.OnDisconnected += onDisconnected;
             client.OnJoinedChannel += onJoinedChannel;
             client.OnMessageReceived += onMessageReceived;
             client.OnNewSubscriber += onNewSubscriber;
@@ -37,6 +38,24 @@ namespace Streamkit.Twitch {
 
         public void JoinChannel(string channelName) {
             this.client.JoinChannel(channelName);
+        }
+
+        private void onDisconnected(object sender, OnDisconnectedArgs e) {
+            try {
+                Logger.Log("Disconnect event; attempting disconnect...");
+                client.Disconnect();
+            }
+            catch (Exception ex) {
+                Logger.Log("Failed to disconnect");
+            }
+
+            try {
+                Logger.Log("Reconnecting...");
+                client.Connect();
+            }
+            catch(Exception ex) {
+                Logger.Log("Failed to reconnect");
+            }
         }
 
         private void onJoinedChannel(object sender, OnJoinedChannelArgs e) {
