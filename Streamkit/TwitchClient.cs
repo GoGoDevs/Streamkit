@@ -52,12 +52,16 @@ namespace Streamkit.Twitch {
                 Logger.Log("Failed to disconnect");
             }
 
-            try {
-                Logger.Log("Reconnecting...");
-                client.Connect();
-            }
-            catch(Exception ex) {
-                Logger.Log("Failed to reconnect");
+            bool success = false;
+            while (!success) {
+                try {
+                    Logger.Log("Reconnecting...");
+                    client.Connect();
+                    success = true;
+                }
+                catch (Exception ex) {
+                    Logger.Log("Failed to reconnect");                
+                }
             }
         }
 
