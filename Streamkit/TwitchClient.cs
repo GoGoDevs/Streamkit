@@ -20,6 +20,7 @@ namespace Streamkit.Twitch {
             client = new TwitchClient();
             client.Initialize(credentials);
 
+            client.OnConnected += onConnected;
             client.OnDisconnected += onDisconnected;
             client.OnJoinedChannel += onJoinedChannel;
             client.OnMessageReceived += onMessageReceived;
@@ -29,15 +30,17 @@ namespace Streamkit.Twitch {
 
             client.Connect();
 
-            foreach (string username in UserManager.GetTwitchUsernames()) {
-                this.JoinChannel(username);
-            }
-
             Instance = this;
         }
 
         public void JoinChannel(string channelName) {
             this.client.JoinChannel(channelName);
+        }
+
+        private void onConnected(object sender, OnConnectedArgs e) {
+            foreach (string username in UserManager.GetTwitchUsernames()) {
+                this.JoinChannel(username);
+            }
         }
 
         private void onDisconnected(object sender, OnDisconnectedArgs e) {
