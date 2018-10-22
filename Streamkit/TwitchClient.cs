@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Timers;
 using TwitchLib.Client;
 using TwitchLib.Client.Enums;
 using TwitchLib.Client.Events;
@@ -12,56 +13,54 @@ namespace Streamkit.Twitch {
         public static TwitchBot Instance;
 
         private TwitchClient client;
+        private Timer timer;
 
         public TwitchBot() {
-            ConnectionCredentials credentials = new ConnectionCredentials(
-                    "BotZura", Config.TwitchChatToken);
+            createClient();
 
-            client = new TwitchClient();
-            client.Initialize(credentials);
+            timer = new Timer(1000 * 60 * 60);
+            timer.Elapsed += (sender, args) => {
+                try {
+                    Logger.Log("Restarting twitch client...");
+                    this.client.Disconnect();
+                }
+                catch {
+                    Logger.Log("Failed to disconnect.");
+                }
 
-            client.OnConnected += onConnected;
-            client.OnDisconnected += onDisconnected;
-            client.OnJoinedChannel += onJoinedChannel;
-            client.OnMessageReceived += onMessageReceived;
-            client.OnNewSubscriber += onNewSubscriber;
-            client.OnReSubscriber += onResubsriber;
-            client.OnGiftedSubscription += onGiftedSubscription;
+                createClient();
 
-            client.Connect();
-
-            Instance = this;
+            };
+            timer.Start();
         }
 
         public void JoinChannel(string channelName) {
             this.client.JoinChannel(channelName);
         }
 
-        private void onConnected(object sender, OnConnectedArgs e) {
-            foreach (string username in UserManager.GetTwitchUsernames()) {
-                this.JoinChannel(username);
-            }
+        private void createClient() {
+            ConnectionCredentials credentials = new ConnectionCredentials(
+                   "BotZura", Config.TwitchChatToken);
+
+            client = new TwitchClient();
+            client.Initialize(credentials);
+
+            client.OnConnected += onConnected;
+            client.OnJoinedChannel += onJoinedChannel;
+            client.OnMessageReceived += onMessageReceived;
+            client.OnNewSubscriber += onNewSubscriber;
+            client.OnReSubscriber += onResubsriber;
+            client.OnGiftedSubscription += onGiftedSubscription;
+
+            Instance = this;
+
+            client.Connect();
         }
 
-        private void onDisconnected(object sender, OnDisconnectedArgs e) {
-            try {
-                Logger.Log("Disconnect event; attempting disconnect...");
-                client.Disconnect();
-            }
-            catch (Exception ex) {
-                Logger.Log("Failed to disconnect");
-            }
-
-            bool success = false;
-            while (!success) {
-                try {
-                    Logger.Log("Reconnecting...");
-                    client.Connect();
-                    success = true;
-                }
-                catch (Exception ex) {
-                    Logger.Log("Failed to reconnect");                
-                }
+        private void onConnected(object sender, OnConnectedArgs e) {
+            Logger.Log("Twitch client connected.");
+            foreach (string username in UserManager.GetTwitchUsernames()) {
+                this.JoinChannel(username);
             }
         }
 
